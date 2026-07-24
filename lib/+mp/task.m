@@ -68,7 +68,7 @@ classdef (Abstract) task < handle
 % See also mp.data_model, mp.net_model, mp.math_model, mp.dm_converter.
 
 %   MATPOWER
-%   Copyright (c) 2020-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2020-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -216,8 +216,8 @@ classdef (Abstract) task < handle
                     %% print initial output
                     if mpopt.verbose && obj.i_dm == 1 && obj.i_nm == 1
                         v = mpver('all');
-                        fprintf('\nMATPOWER Version %s, %s\n', v.Version, v.Date);
-                        fprintf('%s -- %s formulation\n', ...
+                        mp_printf('\nMATPOWER Version %s, %s\n', v.Version, v.Date);
+                        mp_printf('%s -- %s formulation\n', ...
                             mm.task_name(), mm.form_name());
                     end
 
@@ -268,7 +268,7 @@ classdef (Abstract) task < handle
                 %% update data model with network/math model solution
                 dm = mm.data_model_update(nm, dm, mpopt);
                 if mpopt.verbose
-                    fprintf('%s\n', obj.message);
+                    mp_printf('%s\n', obj.message);
                 end
 
                 dm = obj.next_dm(mm, nm, dm, mpopt, mpx);
@@ -467,7 +467,7 @@ classdef (Abstract) task < handle
             else
                 succ_fail = 'failed';
             end
-            fprintf(fd, ...
+            mp_printf(fd, ...
                 '\n%s %s in %.2f seconds (%.2f setup + %.2f solve)\n', ...
                 obj.tag, succ_fail, obj.et, obj.et - obj.mm.soln.output.et, ...
                 obj.mm.soln.output.et);

@@ -92,7 +92,7 @@ classdef (Abstract) dm_element < handle
 % See also mp.data_model.
 
 %   MATPOWER
-%   Copyright (c) 2020-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2020-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -556,11 +556,11 @@ classdef (Abstract) dm_element < handle
 %             else
 %                 display@handle(obj)
 %             end
-            fprintf('DATA MODEL ELEMENT NAME  : %s\n', obj.name);
-            fprintf('DATA MODEL ELEMENT CLASS : %s\n', class(obj));
-            fprintf('    # OF ROWS            : %d\n', obj.nr);
-            fprintf('    # OF ONLINE ELEMENTS : %d\n', obj.n);
-            disp(obj.tab);
+            mp_printf('DATA MODEL ELEMENT NAME  : %s\n', obj.name);
+            mp_printf('DATA MODEL ELEMENT CLASS : %s\n', class(obj));
+            mp_printf('    # OF ROWS            : %d\n', obj.nr);
+            mp_printf('    # OF ONLINE ELEMENTS : %d\n', obj.n);
+            mp_disp(obj.tab);
         end
 
         function obj = pretty_print(obj, dm, section, out_e, mpopt, fd, pp_args)
@@ -597,7 +597,7 @@ classdef (Abstract) dm_element < handle
                     %% title & headers
                     h = obj.pp_get_headers(dm, section, out_e, mpopt, pp_args);
                     for k = 1:length(h)
-                        fprintf(fd, '%s\n', h{k});
+                        mp_printf(fd, '%s\n', h{k});
                     end
 
                     %% data
@@ -606,7 +606,7 @@ classdef (Abstract) dm_element < handle
                     %% footers
                     f = obj.pp_get_footers(dm, section, out_e, mpopt, pp_args);
                     for k = 1:length(f)
-                        fprintf(fd, '%s\n', f{k});
+                        mp_printf(fd, '%s\n', f{k});
                     end
                 end
             end
@@ -781,7 +781,7 @@ classdef (Abstract) dm_element < handle
             else
                 off = '-';
             end
-            fprintf(fd, '  %-20s%7s %7s %7d\n', obj.labels, on, off, obj.nr);
+            mp_printf(fd, '  %-20s%7s %7s %7d\n', obj.labels, on, off, obj.nr);
         end
 
         function TorF = pp_have_section_sum(obj, mpopt, pp_args)
@@ -910,7 +910,7 @@ classdef (Abstract) dm_element < handle
             if obj.pp_have_section_det(mpopt, pp_args)
                 assert(rows == -1, 'dm_elemnt/pp_data_det: ''rows'' is expected to be -1, indicating all rows');
                 for k = 1:obj.nr
-                    fprintf(fd, '%s\n', ...
+                    mp_printf(fd, '%s\n', ...
                         obj.pp_data_row_det(dm, k, out_e, mpopt, fd, pp_args));
                 end
             end

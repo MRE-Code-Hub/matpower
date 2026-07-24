@@ -34,7 +34,7 @@ function mpc = toggle_iflims(mpc, on_off)
 % See also add_userfcn, remove_userfcn, run_userfcn, t_case30_userfcns.
 
 %   MATPOWER
-%   Copyright (c) 2009-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2009-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -230,29 +230,29 @@ OUT_BRANCH      = OUT_ALL == 1 || (OUT_ALL == -1 && ~SUPPRESS && mpopt.out.branc
 
 if isOPF && OUT_BRANCH && (results.success || OUT_FORCE)
     iflims = results.if.lims;
-    fprintf(fd, '\n================================================================================');
-    fprintf(fd, '\n|     Interface Flow Limits                                                    |');
-    fprintf(fd, '\n================================================================================');
-    fprintf(fd, '\n Interface  Shadow Prc  Lower Lim      Flow      Upper Lim   Shadow Prc');
-    fprintf(fd, '\n     #        ($/MW)       (MW)        (MW)        (MW)       ($/MW)   ');
-    fprintf(fd, '\n----------  ----------  ----------  ----------  ----------  -----------');
+    mp_printf(fd, '\n================================================================================');
+    mp_printf(fd, '\n|     Interface Flow Limits                                                    |');
+    mp_printf(fd, '\n================================================================================');
+    mp_printf(fd, '\n Interface  Shadow Prc  Lower Lim      Flow      Upper Lim   Shadow Prc');
+    mp_printf(fd, '\n     #        ($/MW)       (MW)        (MW)        (MW)       ($/MW)   ');
+    mp_printf(fd, '\n----------  ----------  ----------  ----------  ----------  -----------');
     ifidx = unique(iflims(:, 1));   %% interface number list
     nifs = length(ifidx);           %% number of interfaces
     for k = 1:nifs
-        fprintf(fd, '\n%6d ', iflims(k, 1));
+        mp_printf(fd, '\n%6d ', iflims(k, 1));
         if results.if.mu.l(k) > ptol
-            fprintf(fd, '%14.3f', results.if.mu.l(k));
+            mp_printf(fd, '%14.3f', results.if.mu.l(k));
         else
-            fprintf(fd, '          -   ');
+            mp_printf(fd, '          -   ');
         end
-        fprintf(fd, '%12.2f%12.2f%12.2f', iflims(k, 2), results.if.P(k), iflims(k, 3));
+        mp_printf(fd, '%12.2f%12.2f%12.2f', iflims(k, 2), results.if.P(k), iflims(k, 3));
         if results.if.mu.u(k) > ptol
-            fprintf(fd, '%13.3f', results.if.mu.u(k));
+            mp_printf(fd, '%13.3f', results.if.mu.u(k));
         else
-            fprintf(fd, '         -     ');
+            mp_printf(fd, '         -     ');
         end
     end
-    fprintf(fd, '\n');
+    mp_printf(fd, '\n');
 end
 
 

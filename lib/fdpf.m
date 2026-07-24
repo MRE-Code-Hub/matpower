@@ -20,7 +20,7 @@ function [V, converged, i] = fdpf(Ybus, Sbus, V0, Bp, Bpp, ref, pv, pq, mpopt)
 % See also runpf.
 
 %   MATPOWER
-%   Copyright (c) 1996-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 1996-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -57,15 +57,15 @@ Q = imag(mis(pq));
 normP = norm(P, inf);
 normQ = norm(Q, inf);
 if mpopt.verbose > 1
-    fprintf('\niteration     max mismatch (p.u.)  ');
-    fprintf('\ntype   #        P            Q     ');
-    fprintf('\n---- ----  -----------  -----------');
-    fprintf('\n  -  %3d   %10.3e   %10.3e', i, normP, normQ);
+    mp_printf('\niteration     max mismatch (p.u.)  ');
+    mp_printf('\ntype   #        P            Q     ');
+    mp_printf('\n---- ----  -----------  -----------');
+    mp_printf('\n  -  %3d   %10.3e   %10.3e', i, normP, normQ);
 end
 if normP < tol && normQ < tol
     converged = 1;
     if mpopt.verbose > 1
-        fprintf('\nConverged!\n');
+        mp_printf('\nConverged!\n');
     end
 end
 
@@ -112,12 +112,12 @@ while (~converged && i < max_it)
     normP = norm(P, inf);
     normQ = norm(Q, inf);
     if mpopt.verbose > 1
-        fprintf('\n  P  %3d   %10.3e   %10.3e', i, normP, normQ);
+        mp_printf('\n  P  %3d   %10.3e   %10.3e', i, normP, normQ);
     end
     if normP < tol && normQ < tol
         converged = 1;
         if mpopt.verbose
-            fprintf('\nFast-decoupled power flow converged in %d P-iterations and %d Q-iterations.\n', i, i-1);
+            mp_printf('\nFast-decoupled power flow converged in %d P-iterations and %d Q-iterations.\n', i, i-1);
         end
         break;
     end
@@ -143,12 +143,12 @@ while (~converged && i < max_it)
     normP = norm(P, inf);
     normQ = norm(Q, inf);
     if mpopt.verbose > 1
-        fprintf('\n  Q  %3d   %10.3e   %10.3e', i, normP, normQ);
+        mp_printf('\n  Q  %3d   %10.3e   %10.3e', i, normP, normQ);
     end
     if normP < tol && normQ < tol
         converged = 1;
         if mpopt.verbose
-            fprintf('\nFast-decoupled power flow converged in %d P-iterations and %d Q-iterations.\n', i, i);
+            mp_printf('\nFast-decoupled power flow converged in %d P-iterations and %d Q-iterations.\n', i, i);
         end
         break;
     end
@@ -156,6 +156,6 @@ end
 
 if mpopt.verbose
     if ~converged
-        fprintf('\nFast-decoupled power flow did not converge in %d iterations.\n', i);
+        mp_printf('\nFast-decoupled power flow did not converge in %d iterations.\n', i);
     end
 end

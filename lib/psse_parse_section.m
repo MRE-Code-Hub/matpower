@@ -57,7 +57,7 @@ function [data, warns] = psse_parse_section(warns, records, sections, s, verbose
 % See also psse2mpc, psse_parse.
 
 %   MATPOWER
-%   Copyright (c) 2014-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2014-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -106,8 +106,8 @@ if have_sections
         warns{end+1} = sprintf('Section label mismatch, found ''%s'', expected ''%s''', ...
             sections(s).name, upper(label));
         if verbose
-            fprintf('-----  WARNING:  Found section labeled:    ''%s''\n', sections(s).name);
-            fprintf('-----            Expected section labeled: ''%s''\n', upper(label));
+            mp_printf('-----  WARNING:  Found section labeled:    ''%s''\n', sections(s).name);
+            mp_printf('-----            Expected section labeled: ''%s''\n', upper(label));
         end
     end
 else
@@ -116,7 +116,7 @@ else
 end
 if verbose
     spacers = repmat('.', 1, 42-length(label));
-    fprintf('Parsing %6d lines of %s data %s', nr, label, spacers);
+    mp_printf('Parsing %6d lines of %s data %s', nr, label, spacers);
 end
 
 if nr
@@ -218,10 +218,10 @@ else
     data.txt = cell(nr, nt);
 end
 if verbose
-    fprintf(' done.\n');
+    mp_printf(' done.\n');
 %     if have_sections
-%         fprintf('%s\n', upper(label));
-%         fprintf('%s\n', sections(s).name);
+%         mp_printf('%s\n', upper(label));
+%         mp_printf('%s\n', sections(s).name);
 %     end
 end
 

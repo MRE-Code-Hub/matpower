@@ -28,7 +28,7 @@ function [records, sections] = psse_read(rawfile_name, verbose)
 % See also psse2mpc.
 
 %   MATPOWER
-%   Copyright (c) 2014-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2014-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -53,17 +53,17 @@ end
 %% read in the file, split on newlines
 if verbose
     spacers = repmat('.', 1, 56-length(rawfile_name));
-    fprintf('Reading file ''%s'' %s', rawfile_name, spacers);
+    mp_printf('Reading file ''%s'' %s', rawfile_name, spacers);
 end
 str = fileread(rawfile_name);
 if verbose
-    fprintf(' done.\nSplitting into individual lines ...');
+    mp_printf(' done.\nSplitting into individual lines ...');
 end
 records = regexp(str, '\n|\r\n|\r', 'split');
 if verbose
     str = sprintf('%d lines read', length(records));
     spacers = repmat('.', 1, 32-length(str));
-    fprintf('%s %s ... done.\nAnalyzing sections ...', spacers, str);
+    mp_printf('%s %s ... done.\nAnalyzing sections ...', spacers, str);
 end
 
 %% find end of section and/or Q record
@@ -105,7 +105,7 @@ end
 if verbose
     str = sprintf('%d sections', ns);
     spacers = repmat('.', 1, 45-length(str));
-    fprintf('%s %s ... done.\n', spacers, str);
+    mp_printf('%s %s ... done.\n', spacers, str);
 end
 
 %% create the sections struct

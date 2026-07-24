@@ -50,7 +50,7 @@ classdef data_model < mp.element_container
 % See also mp.task, mp.net_model, mp.math_model, mp.dm_converter.
 
 %   MATPOWER
-%   Copyright (c) 1996-2023, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 1996-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -287,31 +287,31 @@ classdef data_model < mp.element_container
 %             else
 %                 display@handle(obj)
 %             end
-            fprintf('DATA MODEL CLASS : %s\n', class(obj));
-            fprintf('        base_mva : %g\n', obj.base_mva);
+            mp_printf('DATA MODEL CLASS : %s\n', class(obj));
+            mp_printf('        base_mva : %g\n', obj.base_mva);
 
             %% elements
-            fprintf('\nELEMENTS\n')
-            fprintf('========\n')
-            fprintf(' i  name            nr         n      class\n');
-            fprintf('-- -----------   --------  --------  --------------------\n');
+            mp_printf('\nELEMENTS\n')
+            mp_printf('========\n')
+            mp_printf(' i  name            nr         n      class\n');
+            mp_printf('-- -----------   --------  --------  --------------------\n');
             for k = 1:length(obj.elements)
                 dme = obj.elements{k};
-                fprintf('%2d  %-13s %6d %9d    %s\n', k, dme.name, dme.nr, dme.n, class(dme));
+                mp_printf('%2d  %-13s %6d %9d    %s\n', k, dme.name, dme.nr, dme.n, class(dme));
 %                 dme
             end
 
             %% user data
             fields = fieldnames(obj.userdata);
             if ~isempty(fields)
-                fprintf('\nUSER DATA\n')
-                fprintf('=========\n')
-                fprintf('  name                         size       class\n');
-                fprintf(' ------------------------   -----------  --------------------\n');
+                mp_printf('\nUSER DATA\n')
+                mp_printf('=========\n')
+                mp_printf('  name                         size       class\n');
+                mp_printf(' ------------------------   -----------  --------------------\n');
                 for k = 1:length(fields)
                     f = obj.userdata.(fields{k});
                     [m, n] = size(f);
-                    fprintf('  %-24s  %5dx%-5d   %s\n', fields{k}, m, n, class(f));
+                    mp_printf('  %-24s  %5dx%-5d   %s\n', fields{k}, m, n, class(f));
                 end
             end
         end
@@ -577,7 +577,7 @@ classdef data_model < mp.element_container
             %% section title & headers
             h = obj.pp_get_headers(section, out_s, mpopt);
             for k = 1:length(h)
-                fprintf(fd, '%s\n', h{k});
+                mp_printf(fd, '%s\n', h{k});
             end
 
             %% section system info

@@ -23,7 +23,7 @@ function [V, Qpv, Sf, St, Sslack, iter, success] = calc_v_y_sum(Vslack,nb,nl,f,Z
 % See also radial_pf.
 
 %   MATPOWER
-%   Copyright (c) 2019-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2019-2026, Power Systems Engineering Research Center (PSERC)
 %   by Mirko Todorovski
 %
 %   This file is part of MATPOWER.
@@ -65,8 +65,8 @@ npv = length(pv);
 Qpv = zeros(npv,1);
 %% do backward-forward iterations
 if mpopt.verbose > 1
-    fprintf('\n it    max V mismatch (p.u.)');
-    fprintf('\n----  ----------------------');
+    mp_printf('\n it    max V mismatch (p.u.)');
+    mp_printf('\n----  ----------------------');
 end
 Ye = conj(Sdz) + Yd;
 D = zeros(nl,1);
@@ -96,7 +96,7 @@ while success == 0 && iter < iter_max
     DU = abs(V - Vold);
     DU(isnan(DU)) = inf;
     if mpopt.verbose > 1
-        fprintf('\n%3d        %10.3e', iter, max(DU));
+        mp_printf('\n%3d        %10.3e', iter, max(DU));
     end
     if max(DU) > tol
         Vold = V;
@@ -119,9 +119,9 @@ while success == 0 && iter < iter_max
 end
 if mpopt.verbose
     if success
-        fprintf('\nAdmittance summation converged in %d iterations.\n', iter);
+        mp_printf('\nAdmittance summation converged in %d iterations.\n', iter);
     else
-        fprintf('\nAdmittance summation did not converge in %d iterations.\n', iter);
+        mp_printf('\nAdmittance summation did not converge in %d iterations.\n', iter);
     end
 end
 %% calculate branch flows

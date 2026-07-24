@@ -27,7 +27,7 @@ classdef dme_shunt3p < mp.dm_element
 % .. [#] *Nominal* means for a voltage of 1 p.u.
 
 %   MATPOWER
-%   Copyright (c) 2021-2025, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2021-2026, Power Systems Engineering Research Center (PSERC)
 %   by Wilson Gonzalez Vanegas, Universidad Nacional de Colombia Sede Manizales
 %   and Ray Zimmerman, PSERC Cornell
 %
@@ -141,18 +141,18 @@ classdef dme_shunt3p < mp.dm_element
             p = [ obj.tab.p1 obj.tab.p2 obj.tab.p3 ];
             q = [ obj.tab.q1 obj.tab.q2 obj.tab.q3 ];
 
-            fprintf(fd, '  %-29s %12.1f kW', 'Total shunt', sum(sum(p)));
+            mp_printf(fd, '  %-29s %12.1f kW', 'Total shunt', sum(sum(p)));
             if mpopt.model(1) ~= 'D'    %% AC model
-                fprintf(fd, ' %12.1f kVAr', sum(sum(q)));
+                mp_printf(fd, ' %12.1f kVAr', sum(sum(q)));
             end
-            fprintf(fd, '\n');
+            mp_printf(fd, '\n');
             if obj.n ~= obj.nr
-                fprintf(fd, '  %-29s %12.1f kW', '  online', ...
+                mp_printf(fd, '  %-29s %12.1f kW', '  online', ...
                                                 sum(sum(p(obj.on, :))));
                 if mpopt.model(1) ~= 'D'    %% AC model
-                    fprintf(fd, ' %12.1f kVAr', sum(sum(q(obj.on, :))));
+                    mp_printf(fd, ' %12.1f kVAr', sum(sum(q(obj.on, :))));
                 end
-                fprintf(fd, '\n');
+                mp_printf(fd, '\n');
             end
         end
 

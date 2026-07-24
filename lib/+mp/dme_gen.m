@@ -33,7 +33,7 @@ classdef dme_gen < mp.dm_element
 %   =====================  =========  =====================================
 
 %   MATPOWER
-%   Copyright (c) 1996-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 1996-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %   and Carlos E. Murillo-Sanchez, PSERC Cornell & Universidad Nacional de Colombia
 %
@@ -235,39 +235,39 @@ classdef dme_gen < mp.dm_element
             ac = mpopt.model(1) ~= 'D';     %% AC model?
 
             %% print generation summary
-            fprintf(fd, '  %-29s %12.1f MW', 'Total generation', ...
+            mp_printf(fd, '  %-29s %12.1f MW', 'Total generation', ...
                                             sum(obj.tab.pg(obj.on)));
             if ac
-                fprintf(fd, ' %12.1f MVAr', sum(obj.tab.qg(obj.on)));
+                mp_printf(fd, ' %12.1f MVAr', sum(obj.tab.qg(obj.on)));
             end
-            fprintf(fd, '\n');
-            fprintf(fd, '  %-29s %12.1f MW', 'Total max generation capacity', ...
+            mp_printf(fd, '\n');
+            mp_printf(fd, '  %-29s %12.1f MW', 'Total max generation capacity', ...
                                             sum(obj.tab.pg_ub));
             if ac
-                fprintf(fd, ' %12.1f MVAr', sum(obj.tab.qg_ub));
+                mp_printf(fd, ' %12.1f MVAr', sum(obj.tab.qg_ub));
             end
-            fprintf(fd, '\n');
+            mp_printf(fd, '\n');
             if obj.n ~= obj.nr
-                fprintf(fd, '  %-29s %12.1f MW', '  online', ...
+                mp_printf(fd, '  %-29s %12.1f MW', '  online', ...
                                                 sum(obj.tab.pg_ub(obj.on)));
                 if ac
-                    fprintf(fd, ' %12.1f MVAr', sum(obj.tab.qg_ub(obj.on)));
+                    mp_printf(fd, ' %12.1f MVAr', sum(obj.tab.qg_ub(obj.on)));
                 end
-                fprintf(fd, '\n');
+                mp_printf(fd, '\n');
             end
-            fprintf(fd, '  %-29s %12.1f MW', 'Total min generation capacity', ...
+            mp_printf(fd, '  %-29s %12.1f MW', 'Total min generation capacity', ...
                                                 sum(obj.tab.pg_lb));
             if ac
-                fprintf(fd, ' %12.1f MVAr', sum(obj.tab.qg_lb));
+                mp_printf(fd, ' %12.1f MVAr', sum(obj.tab.qg_lb));
             end
-            fprintf(fd, '\n');
+            mp_printf(fd, '\n');
             if obj.n ~= obj.nr
-                fprintf(fd, '  %-29s %12.1f MW', '  online', ...
+                mp_printf(fd, '  %-29s %12.1f MW', '  online', ...
                                                 sum(obj.tab.pg_lb(obj.on)));
                 if ac
-                    fprintf(fd, ' %12.1f MVAr', sum(obj.tab.qg_lb(obj.on)));
+                    mp_printf(fd, ' %12.1f MVAr', sum(obj.tab.qg_lb(obj.on)));
                 end
-                fprintf(fd, '\n');
+                mp_printf(fd, '\n');
             end
         end
 

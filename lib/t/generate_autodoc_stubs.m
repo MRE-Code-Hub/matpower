@@ -60,7 +60,7 @@ function [success, err_list] = generate_autodoc_stubs(in, dest, escape_plus)
 %           '~/matpower/docs/sphinx/source/ref-manual/');
 
 %   MATPOWER
-%   Copyright (c) 2023-2025, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2023-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -79,12 +79,12 @@ end
 stub_types = fieldnames(in);
 for k = 1:length(stub_types)
     stub_type = in.(stub_types{k});
-    fprintf('\nCreating .rst stub files for %s:\n', stub_types{k});
+    mp_printf('\nCreating .rst stub files for %s:\n', stub_types{k});
 
     %% create destination directory
     dest_dir = fullfile(dest, stub_type.destdir);
     if ~exist(dest_dir, 'dir')
-        fprintf('Creating directory ''%s''\n', dest_dir);
+        mp_printf('Creating directory ''%s''\n', dest_dir);
         success = mkdir(dest, stub_type.destdir);
         if ~success
             error('generate_autodoc_stubs: unable to create directory ''%s'' in ''%s''.', ...
@@ -102,7 +102,7 @@ for k = 1:length(stub_types)
         pkgs = pkgs(2:end);             %% eliminate module directory name
         pkg_dir = fullfile(dest_dir, pkgs{:});
         if ~exist(pkg_dir, 'dir')
-            fprintf('Creating directory ''%s''\n', pkg_dir);
+            mp_printf('Creating directory ''%s''\n', pkg_dir);
             success = mkdir(pkg_dir);
             if ~success
                 error('generate_autodoc_stubs: unable to create directory ''%s''.', ...
@@ -124,7 +124,7 @@ for k = 1:length(stub_types)
                 is_class_folder = 0;
             end
 
-            fprintf('    %s%s.rst\n', pkg_str, names{f});
+            mp_printf('    %s%s.rst\n', pkg_str, names{f});
             fname = fullfile(pkg_dir, [names{f} '.rst']);
             fullname = strjoin({pkgs{:}, names{f}}, '.');
             if is_class_folder

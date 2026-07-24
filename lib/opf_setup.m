@@ -10,7 +10,7 @@ function om = opf_setup(mpc, mpopt)
 % See also opf, ext2int, opf_execute.
 
 %   MATPOWER
-%   Copyright (c) 1996-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 1996-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %   and Carlos E. Murillo-Sanchez, PSERC Cornell & Universidad Nacional de Colombia
 %
@@ -169,7 +169,7 @@ if length(refs) > 1 && mpopt.verbose > 0
               '           For a system with islands, a reference bus in each island\n', ...
               '           may help convergence, but in a fully connected system such\n', ...
               '           a situation is probably not reasonable.\n\n' ];
-  fprintf(errstr);
+  mp_printf(errstr);
 end
 
 %% set up initial variables and bounds

@@ -22,7 +22,7 @@ function [mpc, warns] = psse_convert(warns, data, verbose)
 % See also psse_read.
 
 %   MATPOWER
-%   Copyright (c) 2014-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2014-2026, Power Systems Engineering Research Center (PSERC)
 %   by Yujia Zhu, PSERC ASU
 %   and Ray Zimmerman, PSERC Cornell
 %   Based on mpraw2mp.m, written by: Yujia Zhu, Jan 2014, yzhu54@asu.edu.
@@ -88,7 +88,7 @@ end
 if ~haveVlims  %% add default voltage magnitude limits if not provided
     warns{end+1} = sprintf('Using default voltage magnitude limits: VMIN = %g p.u., VMAX = %g p.u.', Vmin, Vmax);
     if verbose
-        fprintf('WARNING: No bus voltage magnitude limits provided.\n         Using defaults: VMIN = %g p.u., VMAX = %g p.u.\n', Vmin, Vmax);
+        mp_printf('WARNING: No bus voltage magnitude limits provided.\n         Using defaults: VMIN = %g p.u., VMAX = %g p.u.\n', Vmin, Vmax);
     end
     bus(:, VMIN) = Vmin;
     bus(:, VMAX) = Vmax;
@@ -164,13 +164,13 @@ nzt = find(tbus);
 if length(nzf) < nbr
     warns{end+1} = sprintf('%d branches have bad ''from'' bus numbers', nbr-length(nzf));
     if verbose
-        fprintf('WARNING: %d branches have bad ''from'' bus numbers\n', nbr-length(nzf));
+        mp_printf('WARNING: %d branches have bad ''from'' bus numbers\n', nbr-length(nzf));
     end
 end
 if length(nzt) < nbr
     warns{end+1} = sprintf('%d branches have bad ''to'' bus numbers', nbr-length(nzt));
     if verbose
-        fprintf('WARNING: %d branches have bad ''to'' bus numbers\n', nbr-length(nzt));
+        mp_printf('WARNING: %d branches have bad ''to'' bus numbers\n', nbr-length(nzt));
     end
 end
 Cf = sparse(ibr(nzf), fbus(nzf), branch(nzf, BR_STATUS), nbr, nb);  %% only in-service branches

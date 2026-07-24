@@ -22,7 +22,7 @@ function [f, df, d2f] = opf_legacy_user_cost_fcn(x, cp)
 %       [f, df, d2f] = opf_legacy_user_cost_fcn(x, cp);
 
 %   MATPOWER
-%   Copyright (c) 1996-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 1996-2026, Power Systems Engineering Research Center (PSERC)
 %   by Carlos E. Murillo-Sanchez, PSERC Cornell & Universidad Nacional de Colombia
 %   and Ray Zimmerman, PSERC Cornell
 %
@@ -81,12 +81,12 @@ else
             end
             if max(abs(ddff - df)) > tol
                 idx = find(abs(ddff - df) == max(abs(ddff - df)));
-                fprintf('\nMismatch in gradient\n');
-                fprintf('idx             df(num)         df              diff\n');
-                fprintf('%4d%16g%16g%16g\n', [ 1:length(df); ddff'; df'; abs(ddff - df)' ]);
-                fprintf('MAX\n');
-                fprintf('%4d%16g%16g%16g\n', [ idx'; ddff(idx)'; df(idx)'; abs(ddff(idx) - df(idx))' ]);
-                fprintf('\n');
+                mp_printf('\nMismatch in gradient\n');
+                mp_printf('idx             df(num)         df              diff\n');
+                mp_printf('%4d%16g%16g%16g\n', [ 1:length(df); ddff'; df'; abs(ddff - df)' ]);
+                mp_printf('MAX\n');
+                mp_printf('%4d%16g%16g%16g\n', [ idx'; ddff(idx)'; df(idx)'; abs(ddff(idx) - df(idx))' ]);
+                mp_printf('\n');
             end
         end     %% numeric check
 

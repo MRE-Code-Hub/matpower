@@ -50,7 +50,7 @@ classdef (Abstract) nm_element < handle
 %       build_params() - build model parameters from data model
 
 %   MATPOWER
-%   Copyright (c) 2019-2023, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2019-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -720,17 +720,17 @@ classdef (Abstract) nm_element < handle
 %             else
 %                 display@handle(obj)
 %             end
-            fprintf('NETWORK MODEL ELEMENT NAME  : %s\n', obj.name);
-            fprintf('NETWORK MODEL ELEMENT CLASS : %s\n', class(obj));
-            fprintf('    # OF ELEMENTS           : %d\n', obj.nk);
-            fprintf('    # OF NODES/ELEM         : %d\n', obj.nn);
-            fprintf('    # OF PORTS/ELEM         : %d\n', obj.np);
-            fprintf('    # OF NON-V STATES/ELEM  : %d\n', obj.nz);
+            mp_printf('NETWORK MODEL ELEMENT NAME  : %s\n', obj.name);
+            mp_printf('NETWORK MODEL ELEMENT CLASS : %s\n', class(obj));
+            mp_printf('    # OF ELEMENTS           : %d\n', obj.nk);
+            mp_printf('    # OF NODES/ELEM         : %d\n', obj.nn);
+            mp_printf('    # OF PORTS/ELEM         : %d\n', obj.np);
+            mp_printf('    # OF NON-V STATES/ELEM  : %d\n', obj.nz);
             if isa(obj, 'mp.form')
-                fprintf('    FORMULATION NAME        : %s\n', obj.form_name());
-                fprintf('    FORMULATION TAG         : %s\n', obj.form_tag());
-                fprintf('    FORMULATION CLASS       : %s\n', obj.find_form_class());
-                fprintf('    MODEL PARAMETERS');
+                mp_printf('    FORMULATION NAME        : %s\n', obj.form_name());
+                mp_printf('    FORMULATION TAG         : %s\n', obj.form_tag());
+                mp_printf('    FORMULATION CLASS       : %s\n', obj.find_form_class());
+                mp_printf('    MODEL PARAMETERS');
                 model_params = obj.model_params();
                 for j = 1:length(model_params)
                     pn = model_params{j};   %% parameter name
@@ -740,7 +740,7 @@ classdef (Abstract) nm_element < handle
                         fmt = '%27s : ';
                     end
                     if isempty(obj.(pn))
-                        fprintf([fmt '-\n'], pn);
+                        mp_printf([fmt '-\n'], pn);
                     else
                         [m, n] = size(obj.(pn));
                         if nnz(obj.(pn))
@@ -748,7 +748,7 @@ classdef (Abstract) nm_element < handle
                         else
                             s = '(all zeros)';
                         end
-                        fprintf([fmt '%d x %-7d%s\n'], pn, m, n, s);
+                        mp_printf([fmt '%d x %-7d%s\n'], pn, m, n, s);
                     end
                 end
             end

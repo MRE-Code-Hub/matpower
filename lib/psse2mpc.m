@@ -33,7 +33,7 @@ function [mpc, warnings] = psse2mpc(rawfile_name, mpc_name, verbose, rev)
 %         and hvdc line data. Other data sections are currently ignored.
 
 %   MATPOWER
-%   Copyright (c) 2014-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2014-2026, Power Systems Engineering Research Center (PSERC)
 %   by Yujia Zhu, PSERC ASU
 %   and Ray Zimmerman, PSERC Cornell
 %   Based on mpraw2mp.m, written by: Yujia Zhu, Jan 2014, yzhu54@asu.edu.
@@ -102,10 +102,10 @@ if ~isempty(mpc_name)
 
     if verbose
         spacers = repmat('.', 1, 45-length(mpc_name));
-        fprintf('Saving to MATPOWER case ''%s'' %s', mpc_name, spacers);
+        mp_printf('Saving to MATPOWER case ''%s'' %s', mpc_name, spacers);
     end
     savecase(mpc_name, comments, mpc);
     if verbose
-        fprintf(' done.\n');
+        mp_printf(' done.\n');
     end
 end

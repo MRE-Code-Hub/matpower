@@ -26,7 +26,7 @@ classdef (Abstract) form < handle
 % See also mp.nm_element.
 
 %   MATPOWER
-%   Copyright (c) 2019-2023, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2019-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -274,7 +274,7 @@ classdef (Abstract) form < handle
             end
             if verbose
                 prefix = repmat(' ', 1, 4*level);
-                fprintf('%s %s\n', prefix, mcls.Name);
+                mp_printf('%s %s\n', prefix, mcls.Name);
             end
             if have_feature('octave')
                 sclist = mcls.SuperClassList;
@@ -296,7 +296,7 @@ classdef (Abstract) form < handle
             end
             if verbose
                 fmt = repmat(' %d', 1, n);
-                fprintf(['%s' fmt '\n'], prefix, ii);
+                mp_printf(['%s' fmt '\n'], prefix, ii);
             end
             tab.name{end+1, 1} = mcls.Name;
             tab.ii(end+1, 1:n) = ii;

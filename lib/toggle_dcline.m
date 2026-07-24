@@ -31,7 +31,7 @@ function mpc = toggle_dcline(mpc, on_off)
 % See also idx_dcline, add_userfcn, remove_userfcn, run_userfcn.
 
 %   MATPOWER
-%   Copyright (c) 2011-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2011-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -451,64 +451,64 @@ dc = results.dcline;
 ndc = size(dc, 1);
 kk = find(dc(:, c.BR_STATUS) ~= 0);
 if OUT_BRANCH
-    fprintf(fd, '\n================================================================================');
-    fprintf(fd, '\n|     DC Line Data                                                             |');
-    fprintf(fd, '\n================================================================================');
-    fprintf(fd, '\n Line    From     To        Power Flow           Loss     Reactive Inj (MVAr)');
-    fprintf(fd, '\n   #      Bus     Bus   From (MW)   To (MW)      (MW)       From        To   ');
-    fprintf(fd, '\n------  ------  ------  ---------  ---------  ---------  ---------  ---------');
+    mp_printf(fd, '\n================================================================================');
+    mp_printf(fd, '\n|     DC Line Data                                                             |');
+    mp_printf(fd, '\n================================================================================');
+    mp_printf(fd, '\n Line    From     To        Power Flow           Loss     Reactive Inj (MVAr)');
+    mp_printf(fd, '\n   #      Bus     Bus   From (MW)   To (MW)      (MW)       From        To   ');
+    mp_printf(fd, '\n------  ------  ------  ---------  ---------  ---------  ---------  ---------');
     loss = 0;
     for k = 1:ndc
         if dc(k, c.BR_STATUS)   %% status on
-            fprintf(fd, '\n%5d%8d%8d%11.2f%11.2f%11.2f%11.2f%11.2f', ...
+            mp_printf(fd, '\n%5d%8d%8d%11.2f%11.2f%11.2f%11.2f%11.2f', ...
                         k, dc(k, c.F_BUS:c.T_BUS), dc(k, c.PF:c.PT), ...
                         dc(k, c.PF) - dc(k, c.PT), dc(k, c.QF:c.QT) );
             loss = loss + dc(k, c.PF) - dc(k, c.PT);
         else
-            fprintf(fd, '\n%5d%8d%8d%11s%11s%11s%11s%11s', ...
+            mp_printf(fd, '\n%5d%8d%8d%11s%11s%11s%11s%11s', ...
                         k, dc(k, c.F_BUS:c.T_BUS), '-  ', '-  ', '-  ', '-  ', '-  ');
         end
     end
-    fprintf(fd, '\n                                              ---------');
-    fprintf(fd, '\n                                     Total:%11.2f\n', loss);
+    mp_printf(fd, '\n                                              ---------');
+    mp_printf(fd, '\n                                     Total:%11.2f\n', loss);
 end
 
 if OUT_LINE_LIM == 2 || (OUT_LINE_LIM == 1 && ...
         (any(dc(kk, c.PF) > dc(kk, c.PMAX) - ctol) || ...
          any(dc(kk, c.MU_PMIN) > ptol) || ...
          any(dc(kk, c.MU_PMAX) > ptol)))
-    fprintf(fd, '\n================================================================================');
-    fprintf(fd, '\n|     DC Line Constraints                                                      |');
-    fprintf(fd, '\n================================================================================');
-    fprintf(fd, '\n Line    From     To          Minimum        Actual Flow       Maximum');
-    fprintf(fd, '\n   #      Bus     Bus    Pmin mu     Pmin       (MW)       Pmax      Pmax mu ');
-    fprintf(fd, '\n------  ------  ------  ---------  ---------  ---------  ---------  ---------');
+    mp_printf(fd, '\n================================================================================');
+    mp_printf(fd, '\n|     DC Line Constraints                                                      |');
+    mp_printf(fd, '\n================================================================================');
+    mp_printf(fd, '\n Line    From     To          Minimum        Actual Flow       Maximum');
+    mp_printf(fd, '\n   #      Bus     Bus    Pmin mu     Pmin       (MW)       Pmax      Pmax mu ');
+    mp_printf(fd, '\n------  ------  ------  ---------  ---------  ---------  ---------  ---------');
     for k = 1:ndc
         if OUT_LINE_LIM == 2 || (OUT_LINE_LIM == 1 && ...
                 (dc(k, c.PF) > dc(k, c.PMAX) - ctol || ...
                  dc(k, c.MU_PMIN) > ptol || ...
                  dc(k, c.MU_PMAX) > ptol))
             if dc(k, c.BR_STATUS)   %% status on
-                fprintf(fd, '\n%5d%8d%8d', k, dc(k, c.F_BUS:c.T_BUS) );
+                mp_printf(fd, '\n%5d%8d%8d', k, dc(k, c.F_BUS:c.T_BUS) );
                 if dc(k, c.MU_PMIN) > ptol
-                    fprintf(fd, '%11.3f', dc(k, c.MU_PMIN) );
+                    mp_printf(fd, '%11.3f', dc(k, c.MU_PMIN) );
                 else
-                    fprintf(fd, '%11s', '-  ' );
+                    mp_printf(fd, '%11s', '-  ' );
                 end
-                fprintf(fd, '%11.2f%11.2f%11.2f', ...
+                mp_printf(fd, '%11.2f%11.2f%11.2f', ...
                             dc(k, c.PMIN), dc(k, c.PF), dc(k, c.PMAX) );
                 if dc(k, c.MU_PMAX) > ptol
-                    fprintf(fd, '%11.3f', dc(k, c.MU_PMAX) );
+                    mp_printf(fd, '%11.3f', dc(k, c.MU_PMAX) );
                 else
-                    fprintf(fd, '%11s', '-  ' );
+                    mp_printf(fd, '%11s', '-  ' );
                 end
             else
-                fprintf(fd, '\n%5d%8d%8d%11s%11s%11s%11s%11s', ...
+                mp_printf(fd, '\n%5d%8d%8d%11s%11s%11s%11s%11s', ...
                             k, dc(k, c.F_BUS:c.T_BUS), '-  ', '-  ', '-  ', '-  ', '-  ');
             end
         end
     end
-    fprintf(fd, '\n');
+    mp_printf(fd, '\n');
 end
 
 

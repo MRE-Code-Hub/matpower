@@ -576,32 +576,32 @@ classdef mp_table
                 spc{v} = repmat(' ', 1, floor((cw(v)-cwv(v))/2));
             end
 
-            fprintf('\n %dx%d %s\n\n', nr, nv, class(obj));
+            mp_printf('\n %dx%d %s\n\n', nr, nv, class(obj));
 
             %% display var names & lines
-            fprintf('  %s', repmat(' ', 1, cwr));
+            mp_printf('  %s', repmat(' ', 1, cwr));
             for v = 1:nv
                 fmt = sprintf('  %%-%ds', cw(v));
                 name = sprintf('%s', vn{v});
                 spcs = repmat(' ', 1, floor((cw(v)-length(name))/2));
-                fprintf(fmt, [spcs name]);
+                mp_printf(fmt, [spcs name]);
             end
-            fprintf('\n');
-            fprintf('  %s', repmat(' ', 1, cwr));
+            mp_printf('\n');
+            mp_printf('  %s', repmat(' ', 1, cwr));
             for v = 1:nv
                 s = repmat('-', 1, cw(v));
-                fprintf('  %s', s);
+                mp_printf('  %s', s);
             end
-            fprintf('\n');
+            mp_printf('\n');
 
             %% display var values
             for r = 1:length(rr)
                 %% row names
                 if isempty(rn)
-                    fprintf('  ');
+                    mp_printf('  ');
                 else
                     fmt = sprintf('  %%-%ds', cwr);
-                    fprintf(fmt, rn{rr(r)});
+                    mp_printf(fmt, rn{rr(r)});
                 end
 
                 %% variable values
@@ -623,9 +623,9 @@ classdef mp_table
                             fmt = sprintf('  %%%ds', cw(v));
                         end
                     end
-                    fprintf(fmt, val);
+                    mp_printf(fmt, val);
                 end
-                fprintf('\n');
+                mp_printf('\n');
 
                 %% print continuation dots if not displaying all rows
                 if nr > length(rr) && r == first_last
@@ -639,13 +639,13 @@ classdef mp_table
                                 dot = sprintf('.%s%s', spcs, spc{v});
                                 fmt = sprintf('  %%%ds', cw(v));
                             end
-                            fprintf(fmt, dot);
+                            mp_printf(fmt, dot);
                         end
-                        fprintf('\n');
+                        mp_printf('\n');
                     end
                 end
             end
-            fprintf('\n');
+            mp_printf('\n');
         end
     end     %% methods (public)
 

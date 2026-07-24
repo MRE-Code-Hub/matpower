@@ -50,7 +50,7 @@ function [mpc, warnings] = cdf2mpc(cdf_file_name, mpc_name, verbose)
 %   using converted data. This is the case when we converted ieee300.cdf.
 
 %   MATPOWER
-%   Copyright (c) 1996-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 1996-2026, Power Systems Engineering Research Center (PSERC)
 %   by Deqiang (David) Gan, PSERC Cornell & Zhejiang University
 %   and Ray Zimmerman, PSERC Cornell
 %
@@ -93,12 +93,12 @@ end
 %% open input file
 [fid, msg] = fopen(cdf_file_name, 'r');
 if fid < 0
-    disp(msg);
+    mp_disp(msg);
     error('cdf2mpc: Can not read the input file:  %s', cdf_file_name )
 end
 if verbose
-    fprintf('Converting file ''%s''\n', cdf_file_name);
-    fprintf('  WARNINGS:\n');
+    mp_printf('Converting file ''%s''\n', cdf_file_name);
+    mp_printf('  WARNINGS:\n');
 end
 
 %% initialize list of warnings
@@ -168,7 +168,7 @@ while 1
             bus(ibus, PD) = bus(ibus, PD) - gen(igen, PG);
             warnings{end+1} = sprintf('negative Pg at bus %g treated as Pd', bus(ibus, BUS_I));
             if verbose
-                fprintf('    %s\n', warnings{end});
+                mp_printf('    %s\n', warnings{end});
             end
             gen(igen, PG) = 0;
         end
@@ -179,7 +179,7 @@ while 1
             gen(igen, QMAX) = Qmin + 0.1 * baseMVA;
             warnings{end+1} = sprintf('Qmax = Qmin at generator at bus %4i (Qmax set to Qmin + %g)', bus(ibus, BUS_I), baseMVA/10);
             if verbose
-                fprintf('    %s\n', warnings{end});
+                mp_printf('    %s\n', warnings{end});
             end
         end
         gen(igen, VG)    = str2num(line(85:90));    % specified voltage
@@ -204,7 +204,7 @@ if totgen < 1.04 * totload
     gen(refgen, PMAX) = gen(refgen, PG) + 1.1 * totload - totgen;   % Pg at slack bus is modified
     warnings{end+1} = sprintf('Insufficient generation, setting Pmax at slack bus (bus %d) to %g', gen(refgen, [GEN_BUS, PMAX]));
     if verbose
-        fprintf('    %s\n', warnings{end});
+        mp_printf('    %s\n', warnings{end});
     end
 end
 
@@ -244,7 +244,7 @@ while 1
         branch(k, RATE_A) = 0;                  % RATE A is modified
         warnings{end+1} = sprintf('MVA limit of branch %d - %d not given, set to %g', branch(k, [F_BUS, T_BUS, RATE_A]));
         if verbose
-            fprintf('    %s\n', warnings{end});
+            mp_printf('    %s\n', warnings{end});
         end
     end
     branch(k, RATE_B) = str2num(line(57:61));   % RATE B
@@ -254,7 +254,7 @@ while 1
     branch(k, BR_STATUS) = 1;                   % by default, branch is on
 end
 if verbose
-    fprintf('Done.\n');
+    mp_printf('Done.\n');
 end
 fclose(fid);
 
@@ -288,10 +288,10 @@ if ~isempty(mpc_name)
 
     if verbose
         spacers = repmat('.', 1, 45-length(mpc_name));
-        fprintf('Saving to MATPOWER case ''%s'' %s', mpc_name, spacers);
+        mp_printf('Saving to MATPOWER case ''%s'' %s', mpc_name, spacers);
     end
     savecase(mpc_name, comments, mpc);
     if verbose
-        fprintf(' done.\n');
+        mp_printf(' done.\n');
     end
 end

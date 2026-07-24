@@ -25,7 +25,7 @@ function fname_out = savechgtab(fname, chgtab, warnings)
 %       FNAME :  name of the file, with extention added if necessary
 
 %   MATPOWER
-%   Copyright (c) 2017-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2017-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -67,7 +67,7 @@ end
 if regexp(fcn_name, '\W')
     old_fcn_name = fcn_name;
     fcn_name = regexprep(fcn_name, '\W', '_');
-    fprintf('WARNING: ''%s'' is not a valid function name, changed to ''%s''\n', old_fcn_name, fcn_name);
+    mp_printf('WARNING: ''%s'' is not a valid function name, changed to ''%s''\n', old_fcn_name, fcn_name);
 end
 fname = fullfile(pathstr, [fcn_name extension]);
 

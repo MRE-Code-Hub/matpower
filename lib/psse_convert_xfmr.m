@@ -35,7 +35,7 @@ function [xfmr, bus, warns, bus_name] = psse_convert_xfmr(warns, trans2, trans3,
 % See also psse_convert.
 
 %   MATPOWER
-%   Copyright (c) 2014-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2014-2026, Power Systems Engineering Research Center (PSERC)
 %   by Yujia Zhu, PSERC ASU
 %   and Ray Zimmerman, PSERC Cornell
 %   Based on mptransin.m and mptransficbus.m, written by:
@@ -91,7 +91,7 @@ k = find(fbus == 0 | tbus == 0);
 if ~isempty(k)
     warns{end+1} = sprintf('Ignoring %d two-winding transformers with bad bus numbers', length(k));
     if verbose
-        fprintf('WARNING: Ignoring %d two-winding transformers with bad bus numbers', length(k));
+        mp_printf('WARNING: Ignoring %d two-winding transformers with bad bus numbers', length(k));
     end
     fbus(k) = [];
     tbus(k) = [];
@@ -139,7 +139,7 @@ k = find(ind1 == 0 | ind2 == 0 | ind3 == 0);
 if ~isempty(k)
     warns{end+1} = sprintf('Ignoring %d three-winding transformers with bad bus numbers', length(k));
     if verbose
-        fprintf('WARNING: Ignoring %d three-winding transformers with bad bus numbers', length(k));
+        mp_printf('WARNING: Ignoring %d three-winding transformers with bad bus numbers', length(k));
     end
     ind1(k) = [];
     ind2(k) = [];
@@ -285,7 +285,7 @@ if nt3 > 0
     warns{end+1} = sprintf('Added buses %d-%d as star-points for 3-winding transformers.', ...
         starbus(1, BUS_I), starbus(end, BUS_I));
     if verbose
-        fprintf('Added buses %d-%d as star-points for 3-winding transformers.\n', ...
+        mp_printf('Added buses %d-%d as star-points for 3-winding transformers.\n', ...
             starbus(1, BUS_I), starbus(end, BUS_I));
     end
 end

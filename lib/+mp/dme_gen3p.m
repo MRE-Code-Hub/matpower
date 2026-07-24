@@ -22,7 +22,7 @@ classdef dme_gen3p < mp.dm_element
 %   ================  =========  =====================================
 
 %   MATPOWER
-%   Copyright (c) 2021-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2021-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %   and Carlos E. Murillo-Sanchez, PSERC Cornell & Universidad Nacional de Colombia
 %
@@ -159,7 +159,7 @@ classdef dme_gen3p < mp.dm_element
             pp_data_sum@mp.dm_element(obj, dm, rows, out_e, mpopt, fd, pp_args);
 
             %% print generation summary
-            fprintf(fd, '  %-29s %12.1f kW %12.1f kVAr\n', 'Total 3-ph generation', ...
+            mp_printf(fd, '  %-29s %12.1f kW %12.1f kVAr\n', 'Total 3-ph generation', ...
                 sum(obj.tab.pg1(obj.on)) + ...
                 sum(obj.tab.pg2(obj.on)) + ...
                 sum(obj.tab.pg3(obj.on)), ...

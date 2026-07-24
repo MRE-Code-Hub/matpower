@@ -26,7 +26,7 @@ classdef dme_reserve_gen < mp.dm_element & mp.dme_shared_opf
 % .. [#] Here *u* denotes the units of the objective function, e.g. USD.
 
 %   MATPOWER
-%   Copyright (c) 2022-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2022-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %   and Carlos E. Murillo-Sanchez, PSERC Cornell & Universidad Nacional de Colombia
 %
@@ -114,12 +114,12 @@ classdef dme_reserve_gen < mp.dm_element & mp.dme_shared_opf
             pp_data_sum@mp.dm_element(obj, dm, rows, out_e, mpopt, fd, pp_args);
 
             %% print reserve summary
-            fprintf(fd, '  %-29s %12.1f MW\n', 'Total reserves', ...
+            mp_printf(fd, '  %-29s %12.1f MW\n', 'Total reserves', ...
                                             sum(obj.tab.r(obj.on)));
-            fprintf(fd, '  %-29s %12.1f MW\n', 'Total reserve capacity', ...
+            mp_printf(fd, '  %-29s %12.1f MW\n', 'Total reserve capacity', ...
                                             sum(obj.tab.r_ub));
             if obj.n ~= obj.nr
-                fprintf(fd, '  %-29s %12.1f MW\n', '  online', ...
+                mp_printf(fd, '  %-29s %12.1f MW\n', '  online', ...
                                                 sum(obj.tab.r_ub(obj.on)));
             end
         end

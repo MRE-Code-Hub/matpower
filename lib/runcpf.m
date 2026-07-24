@@ -135,7 +135,7 @@ function [res, suc] = ...
 % See also mpoption, runpf.
 
 %   MATPOWER
-%   Copyright (c) 1996-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 1996-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell,
 %   Shrirang Abhyankar, Argonne National Laboratory,
 %   and Alexander Flueck, IIT
@@ -270,7 +270,7 @@ if plim
     idx_pmax = find( mpcb.gen(:, GEN_STATUS) > 0 & ...
             mpcb.gen(:, PG) - mpcb.gen(:, PMAX) > -mpopt.cpf.p_lims_tol);
     if mpopt.verbose && ~isempty(idx_pmax)
-        fprintf('base case real power output of gen %d reduced from %g to %g MW (PMAX)\n', ...
+        mp_printf('base case real power output of gen %d reduced from %g to %g MW (PMAX)\n', ...
             [idx_pmax mpcb.gen(idx_pmax, PG) mpcb.gen(idx_pmax, PMAX)]');
     end
     mpcb.gen(idx_pmax, PG) = mpcb.gen(idx_pmax, PMAX);
@@ -351,7 +351,7 @@ if ~done.flag
             mpct.gen(:, PG) - mpct.gen(:, PMAX) > -mpopt.cpf.p_lims_tol);
         if ~isempty(idx_pmax)
             if mpopt.verbose
-                fprintf('target case real power output of gen %d reduced from %g to %g MW (PMAX)\n', ...
+                mp_printf('target case real power output of gen %d reduced from %g to %g MW (PMAX)\n', ...
                     [i2e_gen(idx_pmax) mpct.gen(idx_pmax, PG) mpcb.gen(idx_pmax, PG)]');
             end
             mpct.gen(idx_pmax, PG) = mpcb.gen(idx_pmax, PG);
@@ -362,10 +362,10 @@ if ~done.flag
     t0 = tic;
     if mpopt.verbose
         v = mpver('all');
-        fprintf('\nMATPOWER Version %s, %s', v.Version, v.Date);
-        fprintf(' -- AC Continuation Power Flow\n');
+        mp_printf('\nMATPOWER Version %s, %s', v.Version, v.Date);
+        mp_printf(' -- AC Continuation Power Flow\n');
         if mpopt.verbose > 1
-            fprintf('step %3d  :                      lambda = %6.3f, %2d Newton steps\n', 0, 0, mpcb.iterations);
+            mp_printf('step %3d  :                      lambda = %6.3f, %2d Newton steps\n', 0, 0, mpcb.iterations);
         end
     end
 
@@ -493,7 +493,7 @@ if ~done.flag
             done.flag = 1;
             done.msg = sprintf('Corrector did not converge in %d iterations.', i);
             if mpopt.verbose
-                fprintf('step %3d  : stepsize = %-9.3g lambda = %6.3f  corrector did not converge in %d iterations\n', cont_steps, cx.step, nx.lam, i);
+                mp_printf('step %3d  : stepsize = %-9.3g lambda = %6.3f  corrector did not converge in %d iterations\n', cont_steps, cx.step, nx.lam, i);
             end
             cont_steps = max(cont_steps - 1, 1);    %% go back to last step, but not to 0
             break;
@@ -599,17 +599,17 @@ if ~done.flag
                 sub_step = ' ';
             end
             if mpopt.verbose > 4
-                fprintf('step %3d%s : stepsize = %-9.3g lambda = %6.3f', cont_steps, sub_step, cx.step, nx.lam);
+                mp_printf('step %3d%s : stepsize = %-9.3g lambda = %6.3f', cont_steps, sub_step, cx.step, nx.lam);
             else
-                fprintf('step %3d%s : stepsize = %-9.3g lambda = %6.3f  %2d corrector Newton steps', cont_steps, sub_step, cx.step, nx.lam, i);
+                mp_printf('step %3d%s : stepsize = %-9.3g lambda = %6.3f  %2d corrector Newton steps', cont_steps, sub_step, cx.step, nx.lam, i);
             end
             if rollback
-                fprintf(' ^ ROLLBACK\n');
+                mp_printf(' ^ ROLLBACK\n');
             else
-                fprintf('\n');
+                mp_printf('\n');
             end
             if mpopt.verbose > 3 && ~isempty(loc_msg)
-                fprintf('    LOCATING -- %s\n', loc_msg);
+                mp_printf('    LOCATING -- %s\n', loc_msg);
             end
         end
 
@@ -628,7 +628,7 @@ if ~done.flag
             end
             if (mpopt.verbose > 2 && evnts(k).log) || ...
                     (mpopt.verbose > 3 && evnts(k).eidx)
-                fprintf('    %s\n', evnts(k).msg);
+                mp_printf('    %s\n', evnts(k).msg);
             end
         end
         
@@ -716,7 +716,7 @@ end
 
 results.cpf.done_msg = done.msg;
 if mpopt.verbose
-    fprintf('CPF TERMINATION: %s\n', done.msg);
+    mp_printf('CPF TERMINATION: %s\n', done.msg);
 end
 
 if fname

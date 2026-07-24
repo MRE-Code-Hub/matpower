@@ -29,7 +29,7 @@ classdef (Abstract) dm_converter < mp.element_container
 % See also mp.data_model, mp.task.
 
 %   MATPOWER
-%   Copyright (c) 2021-2023, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2021-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -214,16 +214,16 @@ classdef (Abstract) dm_converter < mp.element_container
 %             else
 %                 display@handle(obj)
 %             end
-            fprintf('DATA CONVERTER CLASS : %s\n', class(obj));
+            mp_printf('DATA CONVERTER CLASS : %s\n', class(obj));
 
             %% elements
-            fprintf('\nELEMENTS\n')
-            fprintf('========\n')
-            fprintf(' i  name          class\n');
-            fprintf('-- -----------   --------------------\n');
+            mp_printf('\nELEMENTS\n')
+            mp_printf('========\n')
+            mp_printf(' i  name          class\n');
+            mp_printf('-- -----------   --------------------\n');
             for k = 1:length(obj.elements)
                 dmce = obj.elements{k};
-                fprintf('%2d  %-13s %s\n', k, dmce.name, class(dmce));
+                mp_printf('%2d  %-13s %s\n', k, dmce.name, class(dmce));
 %                 dmce
             end
         end

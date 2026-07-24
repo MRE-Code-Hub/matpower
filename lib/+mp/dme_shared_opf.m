@@ -5,7 +5,7 @@ classdef (Abstract) dme_shared_opf < handle
 % pretty-printing of **lim** sections.
 
 %   MATPOWER
-%   Copyright (c) 2022-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2022-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -122,12 +122,12 @@ classdef (Abstract) dme_shared_opf < handle
             %
             if ~isempty(rows) && rows(1) == -1  %% all rows
                 for k = 1:obj.nr
-                    fprintf(fd, '%s\n', ...
+                    mp_printf(fd, '%s\n', ...
                         obj.pp_data_row_lim(dm, k, out_e, mpopt, fd, pp_args));
                 end
             else
                 for k = 1:length(rows)
-                    fprintf(fd, '%s\n', ...
+                    mp_printf(fd, '%s\n', ...
                         obj.pp_data_row_lim(dm, rows(k), out_e, mpopt, fd, pp_args));
                 end
             end

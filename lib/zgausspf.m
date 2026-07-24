@@ -25,7 +25,7 @@ function [V, converged, i] = zgausspf(Ybus, Sbus, V0, ref, pv, pq, Bpp, mpopt)
 % See also runpf.
 
 %   MATPOWER
-%   Copyright (c) 1996-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 1996-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -164,8 +164,8 @@ end
 
 %% check tolerance
 if mpopt.verbose > 1
-    fprintf('\n it      ∆V (p.u.)    max abs(S) mismatch (p.u.)    max V mismatch (PV) (p.u.) ');
-    fprintf('\n----    -----------  ----------------------------  ----------------------------');
+    mp_printf('\n it      ∆V (p.u.)    max abs(S) mismatch (p.u.)    max V mismatch (PV) (p.u.) ');
+    mp_printf('\n----    -----------  ----------------------------  ----------------------------');
 end
 
 %% do implicit Zbus Gauss iterations
@@ -290,14 +290,14 @@ while (~converged && i < max_it)
     Smispq = Sbus(pq) - V(pq) .* conj(Ipq);
     normS = norm([real(Smispv); real(Smispq); imag(Smispq)], Inf);
     if mpopt.verbose > 1
-%        fprintf('\n%3d        %10.3e %10.6g %10.6g %10.6g %10.6g', i, normV, V(pv(1)), V(pv(2)), imag(Sbus(pv(1))), imag(Sbus(pv(2))));
-%        fprintf('\n%3d        %10.3e %10.6g %10.6g', i, normV, V(pv(1)), imag(Sbus(pv(1))));
-        fprintf('\n%3d     %10.3e             %10.3e                  %10.3e', i, normV, normS, max_dV);
+%        mp_printf('\n%3d        %10.3e %10.6g %10.6g %10.6g %10.6g', i, normV, V(pv(1)), V(pv(2)), imag(Sbus(pv(1))), imag(Sbus(pv(2))));
+%        mp_printf('\n%3d        %10.3e %10.6g %10.6g', i, normV, V(pv(1)), imag(Sbus(pv(1))));
+        mp_printf('\n%3d     %10.3e             %10.3e                  %10.3e', i, normV, normS, max_dV);
     end
     if normS < tol
         converged = 1;
         if mpopt.verbose
-            fprintf('\nImplicit Z-bus Gauss power flow converged in %d iterations.\n', i);
+            mp_printf('\nImplicit Z-bus Gauss power flow converged in %d iterations.\n', i);
         end
     end
     if normV > 1    %% diverging, time to bail out
@@ -313,9 +313,9 @@ end
 if mpopt.verbose
     if ~converged
         if i == max_it
-            fprintf('\nImplicit Z-bus Gauss power flow did not converge in %d iterations.\n', i);
+            mp_printf('\nImplicit Z-bus Gauss power flow did not converge in %d iterations.\n', i);
         else
-            fprintf('\nImplicit Z-bus Gauss power flow diverged in %d iterations.\n', i);
+            mp_printf('\nImplicit Z-bus Gauss power flow diverged in %d iterations.\n', i);
         end
     end
 end

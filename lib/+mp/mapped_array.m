@@ -44,7 +44,7 @@ classdef mapped_array < handle
 %   * display - display the mapped array structure
 
 %   MATPOWER
-%   Copyright (c) 2021-2023, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2021-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -408,7 +408,7 @@ classdef mapped_array < handle
             if have_feature('matlab')
                 display@handle(obj);
             else
-                disp(obj), disp('')
+                mp_disp(obj), mp_disp('')
             end
 
             %% find max length for names
@@ -422,12 +422,12 @@ classdef mapped_array < handle
 
             spc1 = repmat(' ', 1, floor((name_len-2)/2));
             spc2 = repmat(' ', 1, ceil((name_len-2)/2));
-            fprintf('   idx   %sname%s   value\n', spc1, spc2);
+            mp_printf('   idx   %sname%s   value\n', spc1, spc2);
             ln = repmat('-', 1, name_len+2);
-            fprintf('  -----  %s  --------------------\n', ln);
+            mp_printf('  -----  %s  --------------------\n', ln);
             fmt = sprintf('   %%3d    %%-%ds    %%s\n', name_len);
             for k = 1:length(obj.p_.vals)
-                fprintf(fmt, k, obj.p_.names{k}, class(obj.p_.vals{k}))
+                mp_printf(fmt, k, obj.p_.names{k}, class(obj.p_.vals{k}))
             end
         end
     end     %% methods

@@ -20,7 +20,7 @@ function [mpc, success, iterations] = radial_pf(mpc,mpopt)
 % See also caseformat, loadcase, mpoption.
 
 %   MATPOWER
-%   Copyright (c) 2019-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2019-2026, Power Systems Engineering Research Center (PSERC)
 %   by Mirko Todorovski
 %
 %   This file is part of MATPOWER.
@@ -32,12 +32,12 @@ define_constants;
 %% branch ordering
 mpc = order_radial(mpc);
 if ~isempty(mpc.loop)
-    fprintf('\nNumber of detected loops: %i\n', length(mpc.loop));
+    mp_printf('\nNumber of detected loops: %i\n', length(mpc.loop));
     if mpopt.verbose > 0
-        fprintf('\nBranches forming loops\n')
-        fprintf('LOOP# F_BUS T_BUS\n');
+        mp_printf('\nBranches forming loops\n')
+        mp_printf('LOOP# F_BUS T_BUS\n');
         for i = 1:length(mpc.loop)
-            fprintf('%5i %5i %5i\n',i,mpc.order.bus.i2e(mpc.branch(mpc.loop(i),[F_BUS T_BUS])));
+            mp_printf('%5i %5i %5i\n',i,mpc.order.bus.i2e(mpc.branch(mpc.loop(i),[F_BUS T_BUS])));
         end
     end
     error('radial_pf: power flow algorithm %s can only handle radial networks.', mpopt.pf.alg)

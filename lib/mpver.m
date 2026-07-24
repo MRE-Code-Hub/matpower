@@ -16,7 +16,7 @@ function rv = mpver(varargin)
 % and any optional |MATPOWER| packages.
 
 %   MATPOWER
-%   Copyright (c) 2005-2025, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2005-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -36,7 +36,7 @@ function rv = mpver(varargin)
 v{1} = struct(  'Name',     'MATPOWER', ... 
                 'Version',  '8.1.1-dev', ...
                 'Release',  '', ...
-                'Date',     '10-Mar-2026' );
+                'Date',     '31-Jul-2026' );
 if nargout > 0
     if nargin > 0
         rv = v{1};
@@ -74,55 +74,52 @@ else
         if n == 3
             if isempty(v{3}) || isempty(v{3}.Version)
                 if have_feature('matlab')
-                    fprintf('\n%-22s -- not installed --', 'Optimization Toolbox');
+                    mp_printf('\n%-22s -- not installed --', 'Optimization Toolbox');
                 else    %% Octave
-                    fprintf('\n%-22s -- not installed --', 'optim');
+                    mp_printf('\n%-22s -- not installed --', 'optim');
                 end
                 continue;
             elseif have_feature('matlab') && ~license('test', 'optimization_toolbox')
-                fprintf('\n%-22s -- no license --', 'Optimization Toolbox');
+                mp_printf('\n%-22s -- no license --', 'Optimization Toolbox');
                 continue;
             end
         end
-        fprintf('\n%-22s Version %-9s', v{n}.Name, v{n}.Version);
+        mp_printf('\n%-22s Version %-9s', v{n}.Name, v{n}.Version);
         if ~isempty(v{n}.Date)
-            fprintf('  %11s', v{n}.Date);
+            mp_printf('  %11s', v{n}.Date);
             if ~isempty(v{n}.Release)
-                fprintf('   Release: %-10s', v{n}.Release);
+                mp_printf('   Release: %-10s', v{n}.Release);
             end
         end
     end
-    fprintf('\n');
+    mp_printf('\n');
     mptestver;
     mipsver;
     mpomver;
     if have_feature('most')
         mostver;
     else
-        fprintf('%-22s -- not installed --\n', 'MOST');
-    end
-    if have_feature('e4st')
-        e4st_ver;
+        mp_printf('%-22s -- not installed --\n', 'MOST');
     end
     if have_feature('sdp_pf')
         sdp_pf_ver;
     else
-        fprintf('%-22s -- not installed --\n', 'SDP_PF');
+        mp_printf('%-22s -- not installed --\n', 'SDP_PF');
     end
     if have_feature('syngrid')
         sgver;
     else
-        fprintf('%-22s -- not installed --\n', 'SynGrid');
+        mp_printf('%-22s -- not installed --\n', 'SynGrid');
     end
     knitrover;
     if have_feature('bpmpd')
         if exist('bpver', 'file') == 2
             bpver;
         else
-            fprintf('%-22s Version 2.21 or earlier\n', 'BPMPD_MEX');
+            mp_printf('%-22s Version 2.21 or earlier\n', 'BPMPD_MEX');
         end
     else
-        fprintf('%-22s -- not installed --\n', 'BPMPD_MEX');
+        mp_printf('%-22s -- not installed --\n', 'BPMPD_MEX');
     end
     if have_feature('clp')
         s = have_feature('clp', 'all');
@@ -131,15 +128,15 @@ else
         else
             vn = s.vstr;
         end
-        fprintf('%-22s Version %-10s %-11s\n', 'CLP', vn, s.date);
+        mp_printf('%-22s Version %-10s %-11s\n', 'CLP', vn, s.date);
     else
-        fprintf('%-22s -- not installed --\n', 'CLP');
+        mp_printf('%-22s -- not installed --\n', 'CLP');
     end
     if have_feature('cplex')
         s = have_feature('cplex', 'all');
-        fprintf('%-22s Version %-10s %-11s\n', 'CPLEX', s.vstr, s.date);
+        mp_printf('%-22s Version %-10s %-11s\n', 'CPLEX', s.vstr, s.date);
     else
-        fprintf('%-22s -- not installed --\n', 'CPLEX');
+        mp_printf('%-22s -- not installed --\n', 'CPLEX');
     end
     if have_feature('glpk')
         s = have_feature('glpk', 'all');
@@ -148,9 +145,9 @@ else
         else
             vn = s.vstr;
         end
-        fprintf('%-22s Version %-10s %-11s\n', 'GLPK', vn, s.date);
+        mp_printf('%-22s Version %-10s %-11s\n', 'GLPK', vn, s.date);
     else
-        fprintf('%-22s -- not installed --\n', 'GLPK');
+        mp_printf('%-22s -- not installed --\n', 'GLPK');
     end
     gurobiver;
     highsver;
@@ -161,18 +158,18 @@ else
         else
             vn = s.vstr;
         end
-        fprintf('%-22s Version %-10s %-11s\n', 'IPOPT', vn, s.date);
+        mp_printf('%-22s Version %-10s %-11s\n', 'IPOPT', vn, s.date);
     else
-        fprintf('%-22s -- not installed --\n', 'IPOPT');
+        mp_printf('%-22s -- not installed --\n', 'IPOPT');
     end
     if have_feature('minopf')
         if exist('minopfver', 'file') == 2
             minopfver;
         else
-            fprintf('%-22s Version 3.0b2 or earlier\n', 'MINOPF');
+            mp_printf('%-22s Version 3.0b2 or earlier\n', 'MINOPF');
         end
     else
-        fprintf('%-22s -- not installed --\n', 'MINOPF');
+        mp_printf('%-22s -- not installed --\n', 'MINOPF');
     end
     if have_feature('mosek')
         s = have_feature('mosek', 'all');
@@ -181,9 +178,9 @@ else
         else
             vn = s.vstr;
         end
-        fprintf('%-22s Version %-10s %-11s\n', 'MOSEK', vn, s.date);
+        mp_printf('%-22s Version %-10s %-11s\n', 'MOSEK', vn, s.date);
     else
-        fprintf('%-22s -- not installed --\n', 'MOSEK');
+        mp_printf('%-22s -- not installed --\n', 'MOSEK');
     end
     osqpver;
     if have_feature('pardiso')
@@ -193,19 +190,19 @@ else
         else
             vn = s.vstr;
         end
-        fprintf('%-22s Version %-10s %-11s\n', 'PARDISO', vn, s.date);
+        mp_printf('%-22s Version %-10s %-11s\n', 'PARDISO', vn, s.date);
     else
-        fprintf('%-22s -- not installed --\n', 'PARDISO');
+        mp_printf('%-22s -- not installed --\n', 'PARDISO');
     end
     if have_feature('pdipmopf')
         pdipmopfver;
     else
-        fprintf('%-22s -- not installed --\n', 'PDIPMOPF');
+        mp_printf('%-22s -- not installed --\n', 'PDIPMOPF');
     end
     if have_feature('scpdipmopf')
         scpdipmopfver;
     else
-        fprintf('%-22s -- not installed --\n', 'SCPDIPMOPF');
+        mp_printf('%-22s -- not installed --\n', 'SCPDIPMOPF');
     end
     if have_feature('sdpt3')
         s = have_feature('sdpt3', 'all');
@@ -214,9 +211,9 @@ else
         else
             vn = s.vstr;
         end
-        fprintf('%-22s Version %-10s %-11s\n', 'SDPT3', vn, s.date);
+        mp_printf('%-22s Version %-10s %-11s\n', 'SDPT3', vn, s.date);
     else
-        fprintf('%-22s -- not installed --\n', 'SDPT3');
+        mp_printf('%-22s -- not installed --\n', 'SDPT3');
     end
     if have_feature('sedumi')
         s = have_feature('sedumi', 'all');
@@ -225,24 +222,24 @@ else
         else
             vn = s.vstr;
         end
-        fprintf('%-22s Version %-10s %-11s\n', 'SeDuMi', vn, s.date);
+        mp_printf('%-22s Version %-10s %-11s\n', 'SeDuMi', vn, s.date);
     else
-        fprintf('%-22s -- not installed --\n', 'SeDuMi');
+        mp_printf('%-22s -- not installed --\n', 'SeDuMi');
     end
     if have_feature('tralmopf')
         tralmopfver;
     else
-        fprintf('%-22s -- not installed --\n', 'TRALMOPF');
+        mp_printf('%-22s -- not installed --\n', 'TRALMOPF');
     end
     if have_feature('yalmip')
         s = have_feature('yalmip', 'all');
-        fprintf('%-22s Version %-10s %-11s\n', 'YALMIP', s.vstr, s.date);
+        mp_printf('%-22s Version %-10s %-11s\n', 'YALMIP', s.vstr, s.date);
     else
-        fprintf('%-22s -- not installed --\n', 'YALMIP');
+        mp_printf('%-22s -- not installed --\n', 'YALMIP');
     end
 
-    fprintf('%-22s %s\n\n', 'Architecture:', computer);
+    mp_printf('%-22s %s\n\n', 'Architecture:', computer);
     
-    fprintf('  MATPOWER %s is distributed under the 3-clause BSD License.\n', v{1}.Version);
-    fprintf('  Please see the LICENSE file for details.\n\n');
+    mp_printf('  MATPOWER %s is distributed under the 3-clause BSD License.\n', v{1}.Version);
+    mp_printf('  Please see the LICENSE file for details.\n\n');
 end

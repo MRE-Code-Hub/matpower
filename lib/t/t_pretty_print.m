@@ -2,7 +2,7 @@ function t_pretty_print(quiet)
 % t_pretty_print - Tests for pretty printed output.
 
 %   MATPOWER
-%   Copyright (c) 2014-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2014-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -61,7 +61,7 @@ fname_e = fullfile(pathstr, 'pretty-printing', sprintf('%s.txt', fname));
 fname_g = sprintf('%s_%d.txt', fname, rn);
 task = run_pf(casefile, mpopt, 'print_fname', fname_g);
 if ~t_file_match(fname_g, fname_e, t, reps, 1);
-    fprintf('  compare these 2 files:\n    %s\n    %s\n', fname_g, fname_e);
+    mp_printf('  compare these 2 files:\n    %s\n    %s\n', fname_g, fname_e);
     if show_diff_on_fail
         cmd = sprintf('%s %s %s', diff_tool, fname_g, fname_e);
         [status, result] = system(cmd);
@@ -76,7 +76,7 @@ fname_e = fullfile(pathstr, 'pretty-printing', sprintf('%s.txt', fname));
 fname_g = sprintf('%s_%d.txt', fname, rn);
 task = run_cpf({casefile, [casefile 'target']}, mpopt, 'print_fname', fname_g);
 if ~t_file_match(fname_g, fname_e, t, reps, 1);
-    fprintf('  compare these 2 files:\n    %s\n    %s\n', fname_g, fname_e);
+    mp_printf('  compare these 2 files:\n    %s\n    %s\n', fname_g, fname_e);
     if show_diff_on_fail
         cmd = sprintf('%s %s %s', diff_tool, fname_g, fname_e);
         [status, result] = system(cmd);
@@ -91,7 +91,7 @@ fname_e = fullfile(pathstr, 'pretty-printing', sprintf('%s.txt', fname));
 fname_g = sprintf('%s_%d.txt', fname, rn);
 task = run_opf(casefile, mpopt, 'print_fname', fname_g);
 if ~t_file_match(fname_g, fname_e, t, reps, 1);
-    fprintf('  compare these 2 files:\n    %s\n    %s\n', fname_g, fname_e);
+    mp_printf('  compare these 2 files:\n    %s\n    %s\n', fname_g, fname_e);
     if show_diff_on_fail
         cmd = sprintf('%s %s %s', diff_tool, fname_g, fname_e);
         [status, result] = system(cmd);
@@ -112,7 +112,7 @@ fname_e = fullfile(pathstr, 'pretty-printing', sprintf('%s.txt', fname));
 fname_g = sprintf('%s_%d.txt', fname, rn);
 task = run_pf(mpc, mpopt, 'print_fname', fname_g);
 if ~t_file_match(fname_g, fname_e, t, reps, 1);
-    fprintf('  compare these 2 files:\n    %s\n    %s\n', fname_g, fname_e);
+    mp_printf('  compare these 2 files:\n    %s\n    %s\n', fname_g, fname_e);
     if show_diff_on_fail
         cmd = sprintf('%s %s %s', diff_tool, fname_g, fname_e);
         [status, result] = system(cmd);
@@ -127,7 +127,7 @@ fname_e = fullfile(pathstr, 'pretty-printing', sprintf('%s.txt', fname));
 fname_g = sprintf('%s_%d.txt', fname, rn);
 task = run_opf(mpc, mpoption(mpopt, 'out.lim.all', 1), 'print_fname', fname_g);
 if ~t_file_match(fname_g, fname_e, t, reps, 1);
-    fprintf('  compare these 2 files:\n    %s\n    %s\n', fname_g, fname_e);
+    mp_printf('  compare these 2 files:\n    %s\n    %s\n', fname_g, fname_e);
     if show_diff_on_fail
         cmd = sprintf('%s %s %s', diff_tool, fname_g, fname_e);
         [status, result] = system(cmd);
@@ -144,7 +144,7 @@ fname_e = fullfile(pathstr, 'pretty-printing', sprintf('%s.txt', fname));
 fname_g = sprintf('%s_%d.txt', fname, rn);
 task = run_pf(casefile, mpopt, 'print_fname', fname_g, 'mpx', mp.xt_3p());
 if ~t_file_match(fname_g, fname_e, t, reps, 1);
-    fprintf('  compare these 2 files:\n    %s\n    %s\n', fname_g, fname_e);
+    mp_printf('  compare these 2 files:\n    %s\n    %s\n', fname_g, fname_e);
     if show_diff_on_fail
         cmd = sprintf('%s %s %s', diff_tool, fname_g, fname_e);
         [status, result] = system(cmd);
@@ -162,7 +162,7 @@ fname_g = sprintf('%s_%d.txt', fname, rn);
 mpopt.exp.mpx = mp.xt_3p();
 task = run_opf(casefile, mpopt, 'print_fname', fname_g);
 if ~t_file_match(fname_g, fname_e, t, reps, 1);
-    fprintf('  compare these 2 files:\n    %s\n    %s\n', fname_g, fname_e);
+    mp_printf('  compare these 2 files:\n    %s\n    %s\n', fname_g, fname_e);
     if show_diff_on_fail
         cmd = sprintf('%s %s %s', diff_tool, fname_g, fname_e);
         [status, result] = system(cmd);

@@ -47,7 +47,7 @@ classdef (Abstract) math_model < mp.element_container & opt_model
 % See also mp.task, mp.data_model, mp.net_model.
 
 %   MATPOWER
-%   Copyright (c) 2021-2023, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2021-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -148,21 +148,21 @@ classdef (Abstract) math_model < mp.element_container & opt_model
             %
             % See also mp_idx_manager.
 
-            fprintf('MATH MODEL CLASS : %s\n', class(obj));
-            fprintf('    TASK NAME               : %s\n', obj.task_name());
-            fprintf('    TASK TAG                : %s\n', obj.task_tag());
-            fprintf('    FORMULATION NAME        : %s\n', obj.form_name());
-            fprintf('    FORMULATION TAG         : %s\n', obj.form_tag());
+            mp_printf('MATH MODEL CLASS : %s\n', class(obj));
+            mp_printf('    TASK NAME               : %s\n', obj.task_name());
+            mp_printf('    TASK TAG                : %s\n', obj.task_tag());
+            mp_printf('    FORMULATION NAME        : %s\n', obj.form_name());
+            mp_printf('    FORMULATION TAG         : %s\n', obj.form_tag());
             display@opt_model(obj)
 
             %% elements
-            fprintf('\nELEMENTS\n')
-            fprintf('========\n')
-            fprintf('  name              class\n');
-            fprintf(' ----------------  --------------------\n');
+            mp_printf('\nELEMENTS\n')
+            mp_printf('========\n')
+            mp_printf('  name              class\n');
+            mp_printf(' ----------------  --------------------\n');
             for k = 1:length(obj.elements)
                 mme = obj.elements{k};
-                fprintf('  %-13s     %s\n', mme.name, class(mme));
+                mp_printf('  %-13s     %s\n', mme.name, class(mme));
             end
         end
 

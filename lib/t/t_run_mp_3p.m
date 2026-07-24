@@ -2,7 +2,7 @@ function task = t_run_mp_3p(quiet)
 % t_run_mp_3p - Tests for run_pf, run_cpf, run_opf for 3-phase and hybrid test cases.
 
 %   MATPOWER
-%   Copyright (c) 2021-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2021-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -236,7 +236,7 @@ mpc0.gen(2, VG) = mpc.gen(2, VG);
 if t_ok(isequal(mpc0, mpc) && abs(Vg2 - mpc.gen(2, VG)) < 1e-8, t)
     delete(fn);
 else
-    fprintf('  compare these 2 files:\n    %s\n    %s\n', which(casefile), which(fn));
+    mp_printf('  compare these 2 files:\n    %s\n    %s\n', which(casefile), which(fn));
 end
 
 warning('on', 'update_z:multiple_nodes');

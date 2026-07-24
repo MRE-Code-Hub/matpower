@@ -62,7 +62,7 @@ classdef (Abstract) net_model < mp.nm_element & mp.element_container & mp_idx_ma
 % See also mp.form, mp.nm_element, mp.task, mp.data_model, mp.math_model.
 
 %   MATPOWER
-%   Copyright (c) 2019-2023, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2019-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -457,7 +457,7 @@ classdef (Abstract) net_model < mp.nm_element & mp.element_container & mp_idx_ma
 
             %% base element info
             display@mp.nm_element(obj)
-            fprintf('\n');
+            mp_printf('\n');
 
             %% nodes and states
             obj.display_set('node');
@@ -476,36 +476,36 @@ classdef (Abstract) net_model < mp.nm_element & mp.element_container & mp_idx_ma
 
             %% elements
             model_params = obj.model_params();
-            fprintf('ELEMENTS\n')
-            fprintf('========\n')
-            fprintf('  name                  N      np    nz    class, param(m,n))\n');
-            fprintf(' ----------------   --------  ----  ----  --------------------\n');
+            mp_printf('ELEMENTS\n')
+            mp_printf('========\n')
+            mp_printf('  name                  N      np    nz    class, param(m,n))\n');
+            mp_printf(' ----------------   --------  ----  ----  --------------------\n');
             for k = 1:length(obj.elements)
                 nme = obj.elements{k};
-                fprintf('  %-13s %11d %5d %5d    %s', nme.name, nme.nk, nme.np, nme.nz, class(nme));
+                mp_printf('  %-13s %11d %5d %5d    %s', nme.name, nme.nk, nme.np, nme.nz, class(nme));
 
                 for j = 1:length(model_params)
                     pn = model_params{j};   %% parameter name
                     if ~isempty(nme.(pn))
                         [m, n] = size(nme.(pn));
-                        fprintf(', %s(%d,%d)', pn, m, n);
+                        mp_printf(', %s(%d,%d)', pn, m, n);
                     end
                 end
-                fprintf('\n');
+                mp_printf('\n');
             %     nme
             end
 
             %% user data
             fields = fieldnames(obj.userdata);
             if ~isempty(fields)
-                fprintf('\nUSER DATA\n')
-                fprintf('=========\n')
-                fprintf('  name                         size       class\n');
-                fprintf(' ------------------------   -----------  --------------------\n');
+                mp_printf('\nUSER DATA\n')
+                mp_printf('=========\n')
+                mp_printf('  name                         size       class\n');
+                mp_printf(' ------------------------   -----------  --------------------\n');
                 for k = 1:length(fields)
                     f = obj.userdata.(fields{k});
                     [m, n] = size(f);
-                    fprintf('  %-24s  %5dx%-5d   %s\n', fields{k}, m, n, class(f));
+                    mp_printf('  %-24s  %5dx%-5d   %s\n', fields{k}, m, n, class(f));
                 end
             end
         end

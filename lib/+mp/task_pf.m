@@ -29,7 +29,7 @@ classdef task_pf < mp.task
 % See also mp.task.
 
 %   MATPOWER
-%   Copyright (c) 2020-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2020-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -86,16 +86,16 @@ classdef task_pf < mp.task
             if ~isempty(both)   %% we have some Q limit violations
                 if isempty(mn) && isempty(mx)   %% infeasible
                     if mpopt.verbose
-                        fprintf('All %d remaining gens exceed their Q limits : INFEASIBLE PROBLEM\n', length(both));
+                        mp_printf('All %d remaining gens exceed their Q limits : INFEASIBLE PROBLEM\n', length(both));
                     end
                     dm = [];
                     success = 0;
                 else
                     if mpopt.verbose && ~isempty(mx)
-                        fprintf('Gen %d at upper Q limit, converting to PQ bus\n', gen_dme.on(mx));
+                        mp_printf('Gen %d at upper Q limit, converting to PQ bus\n', gen_dme.on(mx));
                     end
                     if mpopt.verbose && ~isempty(mn)
-                        fprintf('Gen %d at lower Q limit, converting to PQ bus\n', gen_dme.on(mn));
+                        mp_printf('Gen %d at lower Q limit, converting to PQ bus\n', gen_dme.on(mn));
                     end
 
                     %% save corresponding limit values
@@ -124,7 +124,7 @@ classdef task_pf < mp.task
                     %% indicate if there's been a change in slack bus
                     ref = find(btv == mp.NODE_TYPE.REF);    %% new ref bus indices
                     if mpopt.verbose && ref ~= ref0
-                        fprintf('Bus %d is new slack bus\n', ...
+                        mp_printf('Bus %d is new slack bus\n', ...
                             bus_dme.ID(bus_dme.on(ref)));
                     end
 

@@ -497,7 +497,7 @@ function opt = mpoption(varargin)
 %                                              for 'pw'
 
 %   MATPOWER
-%   Copyright (c) 2013-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2013-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %   and Shrirang Abhyankar, Argonne National Laboratory
 %
@@ -541,7 +541,7 @@ end
 %% create base options vector to which overrides are made
 if have_opt0
     if isstruct(opt0)               %% it's already a valid options struct
-        if DEBUG, fprintf('OPT0 is a valid options struct\n'); end
+        if DEBUG, mp_printf('OPT0 is a valid options struct\n'); end
         if opt0.v < v
             %% convert older version to current version
             opt_d = mpoption_default();
@@ -648,11 +648,11 @@ if have_opt0
         end
         opt = opt0;
     else                            %% convert from old-style options vector
-        if DEBUG, fprintf('OPT0 is a old-style options vector\n'); end
+        if DEBUG, mp_printf('OPT0 is a old-style options vector\n'); end
         opt = mpoption_v2s(opt0);
     end
 else                                %% use default options struct as base
-    if DEBUG, fprintf('no OPT0, starting with default options struct\n'); end
+    if DEBUG, mp_printf('no OPT0, starting with default options struct\n'); end
     opt = mpoption_default();
 end
 
@@ -661,10 +661,10 @@ end
 ov = [];
 if nargin - k == 0          %% looking at last arg, must be OVERRIDES
     if isstruct(varargin{k})        %% OVERRIDES provided as struct
-        if DEBUG, fprintf('OVERRIDES struct\n'); end
+        if DEBUG, mp_printf('OVERRIDES struct\n'); end
         ov = varargin{k};
     elseif ischar(varargin{k})      %% OVERRIDES provided as file/function name
-        if DEBUG, fprintf('OVERRIDES file/function name\n'); end
+        if DEBUG, mp_printf('OVERRIDES file/function name\n'); end
         try
             ov = feval(varargin{k});
         catch
@@ -679,7 +679,7 @@ if nargin - k == 0          %% looking at last arg, must be OVERRIDES
         error('mpoption: OVERRIDES must be a struct or the name of a function that returns a struct');
     end
 elseif nargin - k > 0 && mod(nargin-k, 2)   %% even number of remaining args
-    if DEBUG, fprintf('NAME/VALUE pairs override defaults\n'); end
+    if DEBUG, mp_printf('NAME/VALUE pairs override defaults\n'); end
     %% process NAME/VALUE pairs
     if strcmp(varargin{k}, upper(varargin{k}))  %% old-style, all UPPERCASE option pairs
         %% NOTE: new top-level option fields cannot be all uppercase
@@ -712,7 +712,7 @@ elseif nargin - k > 0 && mod(nargin-k, 2)   %% even number of remaining args
         end
     end
 elseif nargin == 0 || nargin == 1
-    if DEBUG, fprintf('no OVERRIDES, return default options struct or converted OPT0 vector\n'); end
+    if DEBUG, mp_printf('no OVERRIDES, return default options struct or converted OPT0 vector\n'); end
 else
     error('mpoption: invalid calling syntax, see ''help mpoption'' to double-check the valid options');
 end
@@ -1033,7 +1033,7 @@ end
 
 %%-------------------------------------------------------------------
 function opt_s = mpoption_v2s(opt_v)
-if DEBUG, fprintf('mpoption_v2s()\n'); end
+if DEBUG, mp_printf('mpoption_v2s()\n'); end
 opt_s = mpoption_default();
 errstr = 'mpoption: %g is not a valid value for the old-style ''%s'' option';
 switch opt_v(1)                                 %% PF_ALG
@@ -1208,7 +1208,7 @@ opt_s.gurobi.opt            = opt_v(124);       %% GRB_OPT
 
 %%-------------------------------------------------------------------
 function opt_v = mpoption_s2v(opt_s)
-if DEBUG, fprintf('mpoption_s2v()\n'); end
+if DEBUG, mp_printf('mpoption_s2v()\n'); end
 %% PF_ALG
 old = mpoption_old;
 switch upper(opt_s.pf.alg)
@@ -1541,7 +1541,7 @@ opt_v = [
 
 %%-------------------------------------------------------------------
 function optt = mpoption_default()
-if DEBUG, fprintf('mpoption_default()\n'); end
+if DEBUG, mp_printf('mpoption_default()\n'); end
 persistent opt;             %% cache this for speed
 if ~isstruct(opt)
     opt = struct(...
@@ -1647,7 +1647,7 @@ optt = opt;
 
 %%-------------------------------------------------------------------
 function optt = mpoption_optional_fields()
-if DEBUG, fprintf('mpoption_optional_fields()\n'); end
+if DEBUG, mp_printf('mpoption_optional_fields()\n'); end
 persistent opt;         %% cache this for speed
 if ~isstruct(opt)
     opt_pkgs = mpoption_optional_pkgs();

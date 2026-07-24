@@ -8,7 +8,7 @@ function display(om)
 % See also opt_model.
 
 %   MATPOWER
-%   Copyright (c) 2008-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2008-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -18,12 +18,12 @@ function display(om)
 %% call parent with added set type
 display@opt_model(om, {'cost'});
 
-fprintf('  mpc = ');
+mp_printf('  mpc = ');
 if ~isempty(fieldnames(om.mpc))
-    fprintf('\n');
+    mp_printf('\n');
 end
 if have_feature('octave')
-    fprintf('    <scalar struct>\n');
+    mp_printf('    <scalar struct>\n');
 else
     display(om.mpc);
 end

@@ -31,7 +31,7 @@ classdef dme_load < mp.dm_element
 %       p + j q &= (p_p + j q_p) + (p_i + j q_i) |\cscal{v}| + (p_z + j q_z) |\cscal{v}|^2
 
 %   MATPOWER
-%   Copyright (c) 2020-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2020-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -137,19 +137,19 @@ classdef dme_load < mp.dm_element
             pp_data_sum@mp.dm_element(obj, dm, rows, out_e, mpopt, fd, pp_args);
 
             %% print load summary
-            fprintf(fd, '  %-29s %12.1f MW', 'Total load', ...
+            mp_printf(fd, '  %-29s %12.1f MW', 'Total load', ...
                                             sum(obj.tab.p));
             if mpopt.model(1) ~= 'D'    %% AC model
-                fprintf(fd, ' %12.1f MVAr', sum(obj.tab.q));
+                mp_printf(fd, ' %12.1f MVAr', sum(obj.tab.q));
             end
-            fprintf(fd, '\n');
+            mp_printf(fd, '\n');
             if obj.n ~= obj.nr
-                fprintf(fd, '  %-29s %12.1f MW', '  online', ...
+                mp_printf(fd, '  %-29s %12.1f MW', '  online', ...
                                                 sum(obj.tab.p(obj.on)));
                 if mpopt.model(1) ~= 'D'    %% AC model
-                    fprintf(fd, ' %12.1f MVAr', sum(obj.tab.q(obj.on)));
+                    mp_printf(fd, ' %12.1f MVAr', sum(obj.tab.q(obj.on)));
                 end
-                fprintf(fd, '\n');
+                mp_printf(fd, '\n');
             end
         end
 

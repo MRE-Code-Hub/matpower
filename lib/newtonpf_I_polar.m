@@ -30,7 +30,7 @@ function [V, converged, i] = newtonpf_I_polar(Ybus, Sbus, V0, ref, pv, pq, mpopt
 % See also runpf, newtonpf, newtonpf_S_cart, newtonpf_I_cart.
 
 %   MATPOWER
-%   Copyright (c) 1996-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 1996-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %   and Baljinnyam Sereeter, Delft University of Technology
 %
@@ -74,14 +74,14 @@ F = [   real(mis([pv; pq]));
 %% check tolerance
 normF = norm(F, inf);
 if mpopt.verbose > 1
-    fprintf('\n it   max Ir & Ii mismatch (p.u.)');
-    fprintf('\n----  ---------------------------');
-    fprintf('\n%3d        %10.3e', i, normF);
+    mp_printf('\n it   max Ir & Ii mismatch (p.u.)');
+    mp_printf('\n----  ---------------------------');
+    mp_printf('\n%3d        %10.3e', i, normF);
 end
 if normF < tol
     converged = 1;
     if mpopt.verbose > 1
-        fprintf('\nConverged!\n');
+        mp_printf('\nConverged!\n');
     end
 end
 
@@ -157,18 +157,18 @@ while (~converged && i < max_it)
     %% check for convergence
     normF = norm(F, inf);
     if mpopt.verbose > 1
-        fprintf('\n%3d        %10.3e', i, normF);
+        mp_printf('\n%3d        %10.3e', i, normF);
     end
     if normF < tol
         converged = 1;
         if mpopt.verbose
-            fprintf('\nNewton''s method power flow (current balance, polar) converged in %d iterations.\n', i);
+            mp_printf('\nNewton''s method power flow (current balance, polar) converged in %d iterations.\n', i);
         end
     end
 end
 
 if mpopt.verbose
     if ~converged
-        fprintf('\nNewton''s method power flow (current balance, polar) did not converge in %d iterations.\n', i);
+        mp_printf('\nNewton''s method power flow (current balance, polar) did not converge in %d iterations.\n', i);
     end
 end

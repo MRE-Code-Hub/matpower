@@ -19,7 +19,7 @@ classdef task_opf < mp.task
 % See also mp.task.
 
 %   MATPOWER
-%   Copyright (c) 2020-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2020-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -73,7 +73,7 @@ classdef task_opf < mp.task
             end
 
             print_soln_header@mp.task(obj, mpopt, fd);
-            fprintf(fd, ...
+            mp_printf(fd, ...
                 'Objective Function Value = %.2f $/hr\n', obj.mm.soln.f);
         end
 

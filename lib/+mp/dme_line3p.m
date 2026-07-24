@@ -44,7 +44,7 @@ classdef dme_line3p < mp.dm_element
 %   ======  =========  ==================================================
 
 %   MATPOWER
-%   Copyright (c) 2021-2025, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2021-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -242,7 +242,7 @@ classdef dme_line3p < mp.dm_element
                     [ t.pl1_to t.pl2_to t.pl3_to ];
             qloss = [ t.ql1_fr t.ql2_fr t.ql3_fr ] + ...
                     [ t.ql1_to t.ql2_to t.ql3_to ];
-            fprintf(fd, '  %-29s %12.1f kW %12.1f kVAr\n', 'Total 3-ph line loss', ...
+            mp_printf(fd, '  %-29s %12.1f kW %12.1f kVAr\n', 'Total 3-ph line loss', ...
                 sum(sum(ploss(obj.on, :))), sum(sum(qloss(obj.on, :))) );
         end
 

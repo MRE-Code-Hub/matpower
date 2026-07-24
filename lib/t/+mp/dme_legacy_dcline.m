@@ -31,7 +31,7 @@ classdef dme_legacy_dcline < mp.dm_element
 %   ==================  =========  ========================================
 
 %   MATPOWER
-%   Copyright (c) 2020-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2020-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -197,13 +197,13 @@ classdef dme_legacy_dcline < mp.dm_element
             pp_data_sum@mp.dm_element(obj, dm, rows, out_e, mpopt, fd, pp_args);
 
             %% print DC line summary
-            fprintf(fd, '  %-29s  %12.2f MW', 'Total DC line losses', ...
+            mp_printf(fd, '  %-29s  %12.2f MW', 'Total DC line losses', ...
                 sum(obj.tab.p_fr(obj.on)) - sum(obj.tab.p_to(obj.on)) );
             if mpopt.model(1) ~= 'D'    %% AC model
-                fprintf(fd, ' %12.2f MVAr', ...
+                mp_printf(fd, ' %12.2f MVAr', ...
                     sum(obj.tab.q_fr(obj.on)) + sum(obj.tab.q_to(obj.on)) );
             end
-            fprintf(fd, '\n');
+            mp_printf(fd, '\n');
         end
 
         function h = pp_get_headers_det(obj, dm, out_e, mpopt, pp_args)

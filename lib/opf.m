@@ -157,7 +157,7 @@ function [busout, genout, branchout, f, success, info, et, g, jac, xr, pimul] = 
 % See also runopf, dcopf, uopf, caseformat.
 
 %   MATPOWER
-%   Copyright (c) 1996-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 1996-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %   and Carlos E. Murillo-Sanchez, PSERC Cornell & Universidad Nacional de Colombia
 %
@@ -191,7 +191,7 @@ end
 if mpopt.opf.start == 3
     mpopt_pf = mpoption(mpopt, 'out.all', 0, 'verbose', max(0, mpopt.verbose-1));
     if mpopt.verbose
-        fprintf('Running power flow to initialize OPF.\n');
+        mp_printf('Running power flow to initialize OPF.\n');
     end
     rpf = runpf(mpc, mpopt_pf);
     if rpf.success
@@ -264,7 +264,7 @@ else
         success = 0;
         raw.output.message = 'MATPOWER case contains no connected buses';
         if mpopt.verbose
-            fprintf('OPF not valid : %s\n', raw.output.message);
+            mp_printf('OPF not valid : %s\n', raw.output.message);
         end
     end
     results.success = success;  %% make success available to subsequent callbacks

@@ -10,7 +10,7 @@ function [results, success, raw] = opf_execute(om, mpopt)
 % See also opf, opf_setup.
 
 %   MATPOWER
-%   Copyright (c) 2009-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2009-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -45,21 +45,21 @@ vcart = ~dc && mpopt.opf.v_cartesian;
 
 if mpopt.verbose > 0
     v = mpver('all');
-    fprintf('\nMATPOWER Version %s, %s', v.Version, v.Date);
+    mp_printf('\nMATPOWER Version %s, %s', v.Version, v.Date);
 end
 
 if dc
     %%-----  run DC OPF solver  -----
     if mpopt.verbose > 0
-        fprintf(' -- DC Optimal Power Flow\n');
+        mp_printf(' -- DC Optimal Power Flow\n');
     end
     [results, success, raw] = dcopf_solver(om, mpopt);
 else
     %%-----  run AC OPF solver  -----
     if mpopt.verbose > 0
-        fprintf(' -- AC Optimal Power Flow\n  AC OPF formulation: ');
+        mp_printf(' -- AC Optimal Power Flow\n  AC OPF formulation: ');
         if sdp
-            fprintf('SDP relaxation\n');
+            mp_printf('SDP relaxation\n');
         else
             if vcart
                 v = 'cartesian';
@@ -71,7 +71,7 @@ else
             else
                 v2 = 'power';
             end
-            fprintf('%s voltages, %s balance eqns\n', v, v2);
+            mp_printf('%s voltages, %s balance eqns\n', v, v2);
         end
     end
 

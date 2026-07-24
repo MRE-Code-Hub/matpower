@@ -2,7 +2,7 @@ function t_pf_radial(quiet)
 % t_pf_radial - Tests for legacy distribution power flow solvers.
 
 %   MATPOWER
-%   Copyright (c) 2019-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2019-2026, Power Systems Engineering Research Center (PSERC)
 %   by Mirko Todorovski
 %
 %   This file is part of MATPOWER.
@@ -179,11 +179,11 @@ end
 t_end;
 
 if verbose > 0
-    fprintf('\nITERATIONS: Original test cases (no PV buses), pf.radial.vcorr = 0\n');
+    mp_printf('\nITERATIONS: Original test cases (no PV buses), pf.radial.vcorr = 0\n');
     print_iterations(casefile,method,iter_nopv)
-    fprintf('\nITERATIONS: Test cases with added PV buses, pf.radial.vcorr = 0\n');
+    mp_printf('\nITERATIONS: Test cases with added PV buses, pf.radial.vcorr = 0\n');
     print_iterations(casefile,method,iter_pv(:,:,1))
-    fprintf('\nITERATIONS: Test cases with added PV buses, pf.radial.vcorr = 1\n');
+    mp_printf('\nITERATIONS: Test cases with added PV buses, pf.radial.vcorr = 1\n');
     print_iterations(casefile,method,iter_pv(:,:,2))
 end
 
@@ -192,15 +192,15 @@ if have_feature('octave')
 end
 
 function print_iterations(casefile,method,iterations)
-fprintf('%22s','NR');
+mp_printf('%22s','NR');
 for j = 1:size(method,1)
-    fprintf('%7s',method{j,1});
+    mp_printf('%7s',method{j,1});
 end
-fprintf('\n');
+mp_printf('\n');
 for i = 1:length(casefile)
-    fprintf('%15s',casefile{i});
+    mp_printf('%15s',casefile{i});
     for j = 1:size(method,1)+1
-        fprintf('%7i',iterations(i,j));
+        mp_printf('%7i',iterations(i,j));
     end
-    fprintf('\n');
+    mp_printf('\n');
 end

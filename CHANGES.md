@@ -13,6 +13,11 @@ For change history for [MOST][3], see [most/CHANGES.md](most/CHANGES.md).
 since version 8.1
 -----------------
 
+#### 7/31/26
+  - Use `mp_printf()` and `mp_disp()`, recently included in [MP-Test](1),
+    in place of `fprintf()` and `disp()` everywhere to allow redirecting of
+    console output.
+
 #### 3/10/26
   - Add to `mp_table` the ability to delete rows with `T(*, :) = []` syntax,
     as with MATLAB tables.

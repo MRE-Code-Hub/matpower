@@ -6,7 +6,7 @@ function t_convert_1p_to_3p(quiet)
 % and the resulting balanced, three-phase case match.
 
 %   MATPOWER
-%   Copyright (c) 2019-2025, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2019-2026, Power Systems Engineering Research Center (PSERC)
 %   by Wilson Gonzalez Vanegas, Universidad Nacional de Colombia Sede Manizales
 %
 %   This file is part of MATPOWER.
@@ -195,7 +195,7 @@ mp.case_utils.convert_1p_to_3p(fname_g, C);
 % savecase(fname_g, mp.case_utils.convert_1p_to_3p(C));
 reps = {{'_(\d{6,9})', '', 1}};
 if ~t_file_match(fname_g, fname_e, t, reps, 1);
-    fprintf('  compare these 2 files:\n    %s\n    %s\n', fname_g, fname_e);
+    mp_printf('  compare these 2 files:\n    %s\n    %s\n', fname_g, fname_e);
     if show_diff_on_fail
         cmd = sprintf('%s %s %s', diff_tool, fname_g, fname_e);
         [status, result] = system(cmd);

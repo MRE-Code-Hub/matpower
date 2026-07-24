@@ -20,7 +20,7 @@ function [groupss, isolated] = case_info(mpc, fd)
 %          Report islands that are connected by DC lines.
 
 %   MATPOWER
-%   Copyright (c) 2012-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2012-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -83,17 +83,17 @@ if ndc
 end
 
 if length(nonpos_bus)
-    fprintf(fd, 'Bad bus numbers:              %d\n', length(nonpos_bus));
+    mp_printf(fd, 'Bad bus numbers:              %d\n', length(nonpos_bus));
     for k = 1:length(nonpos_bus)
         s = sprintf('bus(%d, BUS_I)', nonpos_bus(k));
-        fprintf(fd, '%24s = %d\n', s, mpc.bus(nonpos_bus(k), BUS_I));
+        mp_printf(fd, '%24s = %d\n', s, mpc.bus(nonpos_bus(k), BUS_I));
     end
 end
 if ~isempty(unknown_gbus)
-    fprintf(fd, 'Unknown generator buses:      %d\n', length(unknown_gbus));
+    mp_printf(fd, 'Unknown generator buses:      %d\n', length(unknown_gbus));
     for k = 1:length(unknown_gbus)
         s = sprintf('gen(%d, GEN_BUS)', unknown_gbus(k));
-        fprintf(fd, '%24s = %d\n', s, mpc.gen(unknown_gbus(k), GEN_BUS));
+        mp_printf(fd, '%24s = %d\n', s, mpc.gen(unknown_gbus(k), GEN_BUS));
     end
 
     %% remove them
@@ -101,17 +101,17 @@ if ~isempty(unknown_gbus)
     ng  = size(mpc.gen, 1);     %% number of dispatchable injections
 end
 if ~isempty(unknown_fbus)
-    fprintf(fd, 'Unknown branch "from" buses:  %d\n', length(unknown_fbus));
+    mp_printf(fd, 'Unknown branch "from" buses:  %d\n', length(unknown_fbus));
     for k = 1:length(unknown_fbus)
         s = sprintf('branch(%d, F_BUS)', unknown_fbus(k));
-        fprintf(fd, '%24s = %d\n', s, mpc.branch(unknown_fbus(k), F_BUS));
+        mp_printf(fd, '%24s = %d\n', s, mpc.branch(unknown_fbus(k), F_BUS));
     end
 end
 if ~isempty(unknown_tbus)
-    fprintf(fd, 'Unknown branch "to" buses:    %d\n', length(unknown_tbus));
+    mp_printf(fd, 'Unknown branch "to" buses:    %d\n', length(unknown_tbus));
     for k = 1:length(unknown_tbus)
         s = sprintf('branch(%d, T_BUS)', unknown_tbus(k));
-        fprintf(fd, '%24s = %d\n', s, mpc.branch(unknown_tbus(k), T_BUS));
+        mp_printf(fd, '%24s = %d\n', s, mpc.branch(unknown_tbus(k), T_BUS));
     end
 end
 %% remove branches connected to unknown buses
@@ -122,17 +122,17 @@ if ~isempty(unknown_fbus) || ~isempty(unknown_tbus)
 end
 if ndc
     if ~isempty(unknown_fbusdc)
-        fprintf(fd, 'Unknown DC line "from" buses: %d\n', length(unknown_fbusdc));
+        mp_printf(fd, 'Unknown DC line "from" buses: %d\n', length(unknown_fbusdc));
         for k = 1:length(unknown_fbusdc)
             s = sprintf('dcline(%d, c.F_BUS)', unknown_fbusdc(k));
-            fprintf(fd, '%24s = %d\n', s, mpc.dcline(unknown_fbusdc(k), c.F_BUS));
+            mp_printf(fd, '%24s = %d\n', s, mpc.dcline(unknown_fbusdc(k), c.F_BUS));
         end
     end
     if ~isempty(unknown_tbusdc)
-        fprintf(fd, 'Unknown DC line "to" buses:   %d\n', length(unknown_tbusdc));
+        mp_printf(fd, 'Unknown DC line "to" buses:   %d\n', length(unknown_tbusdc));
         for k = 1:length(unknown_tbusdc)
             s = sprintf('dcline(%d, c.T_BUS)', unknown_tbusdc(k));
-            fprintf(fd, '%24s = %d\n', s, mpc.dcline(unknown_tbusdc(k), c.T_BUS));
+            mp_printf(fd, '%24s = %d\n', s, mpc.dcline(unknown_tbusdc(k), c.T_BUS));
         end
     end
     %% remove branches connected to unknown buses
@@ -160,7 +160,7 @@ Cg_on = sparse(1:ng, e2i(mpc.gen(:, GEN_BUS)), mpc.gen(:, GEN_STATUS), ng, nb);
 Cg = sparse(1:ng, e2i(mpc.gen(:, GEN_BUS)), 1, ng, nb);
 
 %% check for islands
-fprintf(fd, 'Checking connectivity ... ');
+mp_printf(fd, 'Checking connectivity ... ');
 [groups, isolated] = connected_components(C_on);
 
 ngr = length(groups);   %% number of islands
@@ -169,13 +169,13 @@ have_isolated = nis > 0;
 if ngr == 1
     if have_isolated
         if nis == 1, s = ''; else, s = 'es'; end
-        fprintf(fd, 'single connected network, plus %d isolated bus%s\n', nis, s);
+        mp_printf(fd, 'single connected network, plus %d isolated bus%s\n', nis, s);
     else
-        fprintf(fd, 'single fully connected network\n');
+        mp_printf(fd, 'single fully connected network\n');
     end
 else
     if nis == 1, s = ''; else, s = 'es'; end
-    fprintf(fd, '%d connected groups, %d isolated bus%s\n', ngr, nis, s);
+    mp_printf(fd, '%d connected groups, %d isolated bus%s\n', ngr, nis, s);
 end
 
 %% collect info on groups
@@ -447,8 +447,8 @@ end
 
 %% print summary
 et = toc;
-fprintf(fd, 'Elapsed time is %f seconds.\n', et);
-fprintf(fd, '================================================================================\n');
+mp_printf(fd, 'Elapsed time is %f seconds.\n', et);
+mp_printf(fd, '================================================================================\n');
 pages = ceil((ngr + have_isolated + 1) / 5);
 for page = 1:pages
     if page == 1
@@ -458,47 +458,47 @@ for page = 1:pages
             islands = 1:min(4, ngr+have_isolated);
         end
     else
-        fprintf(fd, '--------------------------------------------------------------------------------\n');
+        mp_printf(fd, '--------------------------------------------------------------------------------\n');
         islands = (5*(page-1)):min(5*page-1, ngr+have_isolated);
     end
 
     %% header row 1
-    fprintf(fd, '%-20s', '');
+    mp_printf(fd, '%-20s', '');
     if page == 1
-        fprintf(fd, '    Full    ');
+        mp_printf(fd, '    Full    ');
     end
     for k = islands
         if k > ngr
-            fprintf(fd, '  Isolated  ');
+            mp_printf(fd, '  Isolated  ');
         else
-            fprintf(fd, '   Island   ');
+            mp_printf(fd, '   Island   ');
         end
     end
-    fprintf(fd, '\n');
+    mp_printf(fd, '\n');
 
     %% header row 2
-    fprintf(fd, '%-20s', '');
+    mp_printf(fd, '%-20s', '');
     if page == 1
-        fprintf(fd, '   System   ');
+        mp_printf(fd, '   System   ');
     end
     for k = islands
         if k > ngr
-            fprintf(fd, '    Buses   ');
+            mp_printf(fd, '    Buses   ');
         else
-            fprintf(fd, '  %5d     ', k);
+            mp_printf(fd, '  %5d     ', k);
         end
     end
-    fprintf(fd, '\n');
+    mp_printf(fd, '\n');
 
     %% header row 3
-    fprintf(fd, '%-20s', 'Number of:');
+    mp_printf(fd, '%-20s', 'Number of:');
     if page == 1
-        fprintf(fd, ' ---------- ');
+        mp_printf(fd, ' ---------- ');
     end
     for k = islands
-        fprintf(fd, ' ---------- ');
+        mp_printf(fd, ' ---------- ');
     end
-    fprintf(fd, '\n');
+    mp_printf(fd, '\n');
 
     p = struct('page', page, 'islands', islands, 'total', total, 'd', d);
 
@@ -529,8 +529,8 @@ for page = 1:pages
         print_row(fd, p, ' %8d   ', '      off',      'ndct_off');
     end
 
-    fprintf(fd, '\n%-20s\n', 'Load');
-    fprintf(fd,   '%-20s\n', '  active (MW)');
+    mp_printf(fd, '\n%-20s\n', 'Load');
+    mp_printf(fd,   '%-20s\n', '  active (MW)');
     print_row(fd, p, '%11.1f ', '    dispatched',       'Pd');
     print_row(fd, p, '%11.1f ', '      fixed',          'Pd_fixed');
     print_row(fd, p, '%11.1f ', '      dispatchable',   'Pd_disp');
@@ -542,7 +542,7 @@ for page = 1:pages
     print_row(fd, p, '%11.1f ', '      dispatchable',   'Pd_disp_cap');
     print_row(fd, p, '%11.1f ', '        on',           'Pd_disp_cap_on');
     print_row(fd, p, '%11.1f ', '        off',          'Pd_disp_cap_off');
-    fprintf(fd,   '%-20s\n', '  reactive (MVAr)');
+    mp_printf(fd,   '%-20s\n', '  reactive (MVAr)');
     print_row(fd, p, '%11.1f ', '    dispatched',       'Qd');
     print_row(fd, p, '%11.1f ', '      fixed',          'Qd_fixed');
     print_row(fd, p, '%11.1f ', '      dispatchable',   'Qd_disp');
@@ -555,8 +555,8 @@ for page = 1:pages
     print_row(fd, p, '%11.1f ', '        on',           'Qd_disp_cap_on');
     print_row(fd, p, '%11.1f ', '        off',          'Qd_disp_cap_off');
 
-    fprintf(fd, '\n%-20s\n', 'Generation');
-    fprintf(fd,   '%-20s\n', '  active (MW)');
+    mp_printf(fd, '\n%-20s\n', 'Generation');
+    mp_printf(fd,   '%-20s\n', '  active (MW)');
     print_row(fd, p, '%11.1f ', '    dispatched',       'Pg');
     print_row(fd, p, '%11.1f ', '    max capacity',     'Pmax');
     print_row(fd, p, '%11.1f ', '      on',             'Pmax_on');
@@ -564,7 +564,7 @@ for page = 1:pages
     print_row(fd, p, '%11.1f ', '    min capacity',     'Pmin');
     print_row(fd, p, '%11.1f ', '      on',             'Pmin_on');
     print_row(fd, p, '%11.1f ', '      off',            'Pmin_off');
-    fprintf(fd,   '%-20s\n', '  reactive (MVAr)');
+    mp_printf(fd,   '%-20s\n', '  reactive (MVAr)');
     print_row(fd, p, '%11.1f ', '    dispatched',       'Qg');
     print_row(fd, p, '%11.1f ', '    max capacity',     'Qmax');
     print_row(fd, p, '%11.1f ', '      on',             'Qmax_on');
@@ -573,16 +573,16 @@ for page = 1:pages
     print_row(fd, p, '%11.1f ', '      on',             'Qmin_on');
     print_row(fd, p, '%11.1f ', '      off',            'Qmin_off');
 
-    fprintf(fd, '\n%-20s\n', 'Shunt Injections');
+    mp_printf(fd, '\n%-20s\n', 'Shunt Injections');
     print_row(fd, p, '%11.1f ', '    active (MW)',      'Ps');
     print_row(fd, p, '%11.1f ', '    reactive (MVAr)',  'Qs');
 
-    fprintf(fd, '\n%-20s\n', 'Branch Losses');
+    mp_printf(fd, '\n%-20s\n', 'Branch Losses');
     print_row(fd, p, '%11.1f ', '    active (MW)',      'Ploss');
     print_row(fd, p, '%11.1f ', '    reactive (MVAr)',  'Qloss');
 
-    fprintf(fd, '\n%-20s\n', 'DC line');
-    fprintf(fd,   '%-20s\n', '  export (MW)');
+    mp_printf(fd, '\n%-20s\n', 'DC line');
+    mp_printf(fd,   '%-20s\n', '  export (MW)');
     print_row(fd, p, '%11.1f ', '    dispatch',      'Pdc');
     print_row(fd, p, '%11.1f ', '    max capacity',  'Pmaxdc');
     print_row(fd, p, '%11.1f ', '      on',          'Pmaxdc_on');
@@ -591,38 +591,38 @@ for page = 1:pages
     print_row(fd, p, '%11.1f ', '      on',          'Pmindc_on');
     print_row(fd, p, '%11.1f ', '      off',         'Pmindc_off');
 
-    fprintf(fd, '\n%-20s\n', 'Reference Buses');
+    mp_printf(fd, '\n%-20s\n', 'Reference Buses');
 
-    fprintf(fd, '%-20s', '  num of ref buses');
+    mp_printf(fd, '%-20s', '  num of ref buses');
     if page == 1
-        fprintf(fd, ' %8d   ', nrefs);
+        mp_printf(fd, ' %8d   ', nrefs);
     end
     for k = islands
-        fprintf(fd, ' %8d   ', length(refs{k}));
+        mp_printf(fd, ' %8d   ', length(refs{k}));
     end
-    fprintf(fd, '\n');
+    mp_printf(fd, '\n');
 
     for j = 1:nrefs
         if j == 1
-            fprintf(fd, '%-20s', '  ref bus numbers');
+            mp_printf(fd, '%-20s', '  ref bus numbers');
         else
-            fprintf(fd, '%-20s', '');
+            mp_printf(fd, '%-20s', '');
         end
         if page == 1
-            fprintf(fd, ' %8d   ', mpc.bus(allrefs(j), BUS_I));
+            mp_printf(fd, ' %8d   ', mpc.bus(allrefs(j), BUS_I));
         end
         for k = islands
             if j <= length(refs{k})
-                fprintf(fd, ' %8d   ', mpc.bus(refs{k}(j), BUS_I));
+                mp_printf(fd, ' %8d   ', mpc.bus(refs{k}(j), BUS_I));
             else
-                fprintf(fd, ' %8s   ', '');
+                mp_printf(fd, ' %8s   ', '');
             end
         end
-        fprintf(fd, '\n');
+        mp_printf(fd, '\n');
     end
 
     if page ~= pages
-        fprintf(fd, '\n\n');
+        mp_printf(fd, '\n\n');
     end
 end
 
@@ -636,22 +636,22 @@ end
 
 function print_row(fd, p, template, name, field)
 templatez = sprintf('%%%ds', length(sprintf(template, 0)));
-fprintf(fd, '%-20s', name);
+mp_printf(fd, '%-20s', name);
 if p.page == 1
     if p.total.(field) == 0
-        fprintf(fd, templatez, '-   ');
+        mp_printf(fd, templatez, '-   ');
     else
-        fprintf(fd, template, p.total.(field));
+        mp_printf(fd, template, p.total.(field));
     end
 end
 for k = p.islands
     if p.d(k).(field) == 0
-        fprintf(fd, templatez, '-   ');
+        mp_printf(fd, templatez, '-   ');
     else
-        fprintf(fd, template, p.d(k).(field));
+        mp_printf(fd, template, p.d(k).(field));
     end
 end
-fprintf(fd, '\n');
+mp_printf(fd, '\n');
 
 
 function unknown = unknown_buses(e2i, nbase, bus_list)

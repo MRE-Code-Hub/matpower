@@ -8,7 +8,7 @@ classdef math_model_pf_acps < mp.math_model_pf_ac & mp.mm_shared_pfcpf_acps
 % power flow.
 
 %   MATPOWER
-%   Copyright (c) 2021-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2021-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -150,7 +150,7 @@ classdef math_model_pf_acps < mp.math_model_pf_ac & mp.mm_shared_pfcpf_acps
                 v_(pv) = vmpv .* v_(pv) ./ abs(v_(pv));
                 dV = vmpv0 - vmpv;
 %                 [max_dV, k] = max(abs(dV));
-%                 fprintf('       %10.3e', max_dV)
+%                 mp_printf('       %10.3e', max_dV)
 
                 %% compute Q injection at current V
                 %% (sometimes improves convergence)

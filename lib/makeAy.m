@@ -24,7 +24,7 @@ function [Ay, by] = makeAy(baseMVA, ng, gencost, pgbas, qgbas, ybas)
 %       [Ay, by]  = makeAy(baseMVA, ng, gencost, pgbas, qgbas, ybas);
 
 %   MATPOWER
-%   Copyright (c) 1996-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 1996-2026, Power Systems Engineering Research Center (PSERC)
 %   by Carlos E. Murillo-Sanchez, PSERC Cornell & Universidad Nacional de Colombia
 %
 %   This file is part of MATPOWER.
@@ -70,7 +70,7 @@ for i=iycost'
    c = gencost(i, COST+1:2:COST+2*ns);
    m = diff(c) ./ diff(p);                % slopes for Pg (or Qg)
    if any(diff(p) == 0)
-     fprintf('\nmakeAy: bad x axis data in row %i of gencost matrix\n',i);
+     mp_printf('\nmakeAy: bad x axis data in row %i of gencost matrix\n',i);
    end
    b = m .* p(1:ns-1) - c(1:ns-1);        % and rhs
    by = [by;  b'];

@@ -22,7 +22,7 @@ classdef cost_table_utils
 % See also mp.cost_table.
 
 %   MATPOWER
-%   Copyright (c) 2023-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2023-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -133,7 +133,7 @@ classdef cost_table_utils
                     c = cost.pwl_cost(i, 1:ns);
                     m = diff(c) ./ diff(p);         %% slopes for pg (or qg)
                     if any(diff(p) == 0)
-                        fprintf('mp.cost_table_utils/pwl_params: bad qty data in row %i of cost matrix\n', i);
+                        mp_printf('mp.cost_table_utils/pwl_params: bad qty data in row %i of cost matrix\n', i);
                     end
                     b = m .* p(1:ns-1) - c(1:ns-1); %% and rhs
                     by = [by;  b'];

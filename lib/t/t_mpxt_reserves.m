@@ -2,7 +2,7 @@ function t_mpxt_reserves(quiet)
 % t_mpxt_reserves - Tests mp.xt_reserves extension.
 
 %   MATPOWER
-%   Copyright (c) 2009-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2009-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -74,7 +74,7 @@ t_is(rg.cost, mpc.reserves.cost, 12, [t 'cost']);
 t_is(rg.qty, mpc.reserves.qty, 12, [t 'qty']);
 t_is(sum(rg.total_cost), 177.8047, 4, [t 'totalcost']);
 if ~t_file_match(fname_g, fname_e, [t 'pretty printing'], reps, 1);
-    fprintf('  compare these 2 files:\n    %s\n    %s\n', fname_g, fname_e);
+    mp_printf('  compare these 2 files:\n    %s\n    %s\n', fname_g, fname_e);
     if show_diff_on_fail
         cmd = sprintf('%s %s %s', diff_tool, fname_g, fname_e);
         [status, result] = system(cmd);
@@ -104,7 +104,7 @@ t_is(rg.cost, mpc.reserves.cost, 12, [t 'cost']);
 t_is(rg.qty, mpc.reserves.qty, 12, [t 'qty']);
 t_is(sum(rg.total_cost), 187.5, 4, [t 'totalcost']);
 if ~t_file_match(fname_g, fname_e, [t 'pretty printing'], reps, 1);
-    fprintf('  compare these 2 files:\n    %s\n    %s\n', fname_g, fname_e);
+    mp_printf('  compare these 2 files:\n    %s\n    %s\n', fname_g, fname_e);
     if show_diff_on_fail
         cmd = sprintf('%s %s %s', diff_tool, fname_g, fname_e);
         [status, result] = system(cmd);
@@ -163,7 +163,7 @@ t_is(rg.cost, mpc.reserves.cost, 12, [t 'cost']);
 t_is(rg.qty, mpc.reserves.qty, 12, [t 'qty']);
 t_is(sum(rg.total_cost), 187.5, 4, [t 'totalcost']);
 if ~t_file_match(fname_g, fname_e, [t 'pretty printing'], reps, 1);
-    fprintf('  compare these 2 files:\n    %s\n    %s\n', fname_g, fname_e);
+    mp_printf('  compare these 2 files:\n    %s\n    %s\n', fname_g, fname_e);
     if show_diff_on_fail
         cmd = sprintf('%s %s %s', diff_tool, fname_g, fname_e);
         [status, result] = system(cmd);
@@ -206,7 +206,7 @@ t_is(rg.mu_pg_ub, [0; 0; 0; 0; 0.5; 0], 7, [t 'mu.Pmax']);
 t_is(rg.cost, mpc.reserves.cost, 12, [t 'cost']);
 t_is(sum(rg.total_cost), 177.8047, 4, [t 'totalcost']);
 if ~t_file_match(fname_g, fname_e, [t 'pretty printing'], reps, 1);
-    fprintf('  compare these 2 files:\n    %s\n    %s\n', fname_g, fname_e);
+    mp_printf('  compare these 2 files:\n    %s\n    %s\n', fname_g, fname_e);
     if show_diff_on_fail
         cmd = sprintf('%s %s %s', diff_tool, fname_g, fname_e);
         [status, result] = system(cmd);
@@ -234,7 +234,7 @@ t_is(rg.cost, mpc.reserves.cost, 12, [t 'cost']);
 t_is(rg.qty, mpc.reserves.qty, 12, [t 'qty']);
 t_is(sum(rg.total_cost), 177.5, 4, [t 'totalcost']);
 if ~t_file_match(fname_g, fname_e, [t 'pretty printing'], reps, 1);
-    fprintf('  compare these 2 files:\n    %s\n    %s\n', fname_g, fname_e);
+    mp_printf('  compare these 2 files:\n    %s\n    %s\n', fname_g, fname_e);
     if show_diff_on_fail
         cmd = sprintf('%s %s %s', diff_tool, fname_g, fname_e);
         [status, result] = system(cmd);

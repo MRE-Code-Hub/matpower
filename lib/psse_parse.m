@@ -46,7 +46,7 @@ function [data, warns] = psse_parse(records, sections, verbose, rev)
 % See also psse2mpc, psse_read, psse_parse_section, psse_parse_line.
 
 %   MATPOWER
-%   Copyright (c) 2014-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2014-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %   Based on mpreadraw.m, written by: Yujia Zhu, Jan 2014, yzhu54@asu.edu.
 %
@@ -73,11 +73,11 @@ warns = {};
 %%  / PSS(tm)E-30 RAW
 if verbose
     if rev
-        fprintf('Forcing interpretation as PSS/E revision %d\n', rev);
+        mp_printf('Forcing interpretation as PSS/E revision %d\n', rev);
     else
-        fprintf('Attempting to determine PSS/E revision from content.\n');
+        mp_printf('Attempting to determine PSS/E revision from content.\n');
     end
-    fprintf('Parsing case identification data ...');
+    mp_printf('Parsing case identification data ...');
 end
 if rev
     warns{end+1} = sprintf('Conversion explicitly using PSS/E revision %d', rev);
@@ -121,15 +121,15 @@ data.id.comment2 = records{3};
 if verbose
     if rev
         if data.id.REV
-            fprintf('.. override detected rev %2d w/%2d ... done.\n', data.id.REV, rev);
+            mp_printf('.. override detected rev %2d w/%2d ... done.\n', data.id.REV, rev);
         else
-            fprintf('...... unknown rev, using rev %2d ... done.\n', rev);
+            mp_printf('...... unknown rev, using rev %2d ... done.\n', rev);
         end
     else
         if data.id.REV
-            fprintf('......... rev %2d format detected ... done.\n', data.id.REV);
+            mp_printf('......... rev %2d format detected ... done.\n', data.id.REV);
         else
-            fprintf('...... unknown rev, using rev %2d ... done.\n', defaultrev);
+            mp_printf('...... unknown rev, using rev %2d ... done.\n', defaultrev);
         end
     end
 end
@@ -147,7 +147,7 @@ end
 if isempty(data.id.IC) || data.id.IC ~= 0
     warns{end+1} = sprintf('IC = %d indicates that this may be a change case, rather than base case\n         PSSE2MPC is NOT designed to handle change cases.', data.id.IC);
     if verbose
-        fprintf('WARNING : %s\n', warns{end});
+        mp_printf('WARNING : %s\n', warns{end});
     end
 end
 s = s + 1;
@@ -217,14 +217,14 @@ if rev > 27
     label = 'transformer';
     if ~isempty(sections(s).name) && ~strcmpi(label, sections(s).name)
         if verbose > 1
-            fprintf('-----  WARNING:  Expected section labeled: ''%s''\n', upper(label));
-            fprintf('-----            Found section labeled:    ''%s''\n', sections(s).name);
+            mp_printf('-----  WARNING:  Expected section labeled: ''%s''\n', upper(label));
+            mp_printf('-----            Found section labeled:    ''%s''\n', sections(s).name);
         end
     end
 
     %% Step 1 : Count and collect transformer types
     if verbose
-        fprintf('Analyzing transformer types ...');
+        mp_printf('Analyzing transformer types ...');
     end
 
     %% estimate max number of transformers by number of lines in section
@@ -245,7 +245,7 @@ if rev > 27
         pat = '[^''",\s/]+\s*(,|\s)\s*[^''",\s/]+\s*(,|\s)\s*([^''",\s/]+)';
         m = regexp(records{i}, pat, 'tokens', 'once');
         if length(m) ~= 3
-            disp(m);
+            mp_disp(m);
             error('m should be length 3');
         end
         if length(m{3}) == 1 && m{3}(1) == '0'  %% two-winding
@@ -264,7 +264,7 @@ if rev > 27
     if verbose
         str = sprintf(' %d(%d) two(three)-winding.', nt2, nt3);
         spacers = repmat('.', 1, 36-length(str));
-        fprintf('%s %s ... done.\n', spacers, str);
+        mp_printf('%s %s ... done.\n', spacers, str);
     end
 
     %% trim index vectors down to size
@@ -327,8 +327,8 @@ if rev > 27
     data.trans3.txt = [t3_1.txt(:, 1:20) t3_2.txt(:, 1:11) t3_3.txt(:, 1:16) t3_4.txt(:, 1:16) t3_5.txt(:, 1:16)];
 
     % if verbose
-    %     fprintf('%s\n', upper(label));
-    %     fprintf('%s\n', sections(s).name);
+    %     mp_printf('%s\n', upper(label));
+    %     mp_printf('%s\n', sections(s).name);
     % end
     s = s + 1;
 end
@@ -341,8 +341,8 @@ s = s + 1;
 label = 'two-terminal DC';
 if ~isempty(sections(s).name) && ~strcmpi(label, sections(s).name)
     if verbose > 1
-        fprintf('-----  WARNING:  Expected section labeled: ''%s''\n', upper(label));
-        fprintf('-----            Found section labeled:    ''%s''\n', sections(s).name);
+        mp_printf('-----  WARNING:  Expected section labeled: ''%s''\n', upper(label));
+        mp_printf('-----            Found section labeled:    ''%s''\n', sections(s).name);
     end
 end
 idx = sections(s).first:3:sections(s).last;
@@ -372,8 +372,8 @@ end
 data.twodc.num = [dc1.num dc2.num dc3.num];
 data.twodc.txt = [dc1.txt dc2.txt dc3.txt];
 % if verbose
-%     fprintf('%s\n', upper(label));
-%     fprintf('%s\n', sections(s).name);
+%     mp_printf('%s\n', upper(label));
+%     mp_printf('%s\n', sections(s).name);
 % end
 s = s + 1;
 
@@ -455,7 +455,7 @@ end
 if s <= length(sections)
     warns{end+1} = sprintf('Found %d additional section(s)', length(sections)-s+1);
     if verbose > 1
-        fprintf('-----  WARNING:   Found %d additional section(s):\n', length(sections)-s+1);
+        mp_printf('-----  WARNING:   Found %d additional section(s):\n', length(sections)-s+1);
     end
 end
 while s <= length(sections)
@@ -468,12 +468,12 @@ while s <= length(sections)
     if isempty(sections(s).name)
         warns{end+1} = sprintf('  unlabeled section %s', str);
         if verbose > 1
-            fprintf('-----            unlabeled section %s\n', str);
+            mp_printf('-----            unlabeled section %s\n', str);
         end
     else
         warns{end+1} = sprintf('  ''%s DATA'' %s', sections(s).name, str);
         if verbose > 1
-            fprintf('-----            ''%s DATA'' %s\n', sections(s).name, str);
+            mp_printf('-----            ''%s DATA'' %s\n', sections(s).name, str);
         end
     end
     s = s + 1;
@@ -489,7 +489,7 @@ function [s, warns] = psse_skip_section(warns, sections, s, verbose, label)
 if s > length(sections)
     if verbose
         spacers = repmat('.', 1, 58-length(label));
-        fprintf('No %s data read %s done.\n', label, spacers);
+        mp_printf('No %s data read %s done.\n', label, spacers);
     end
 else
     nr = sections(s).last - sections(s).first + 1;
@@ -505,13 +505,13 @@ else
         warns{end+1} = sprintf('Section label mismatch, found ''%s'', expected ''%s''', ...
             sections(s).name, upper(label));
         if verbose
-            fprintf('-----  WARNING:  Found section labeled:    ''%s''\n', sections(s).name);
-            fprintf('-----            Expected section labeled: ''%s''\n', upper(label));
+            mp_printf('-----  WARNING:  Found section labeled:    ''%s''\n', sections(s).name);
+            mp_printf('-----            Expected section labeled: ''%s''\n', upper(label));
         end
     end
     if verbose && nr
         spacers = repmat('.', 1, 47-length(ss)-length(label));
-        fprintf('Skipping%6d %s of %s data %s done.\n', nr, ss, label, spacers);
+        mp_printf('Skipping%6d %s of %s data %s done.\n', nr, ss, label, spacers);
     end
     s = s + 1;
 end

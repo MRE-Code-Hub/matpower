@@ -60,7 +60,7 @@ function [success, err_list] = generate_source_symlinks(in, dest, src)
 %           '../../../../../');
 
 %   MATPOWER
-%   Copyright (c) 2023-2025, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2023-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -76,7 +76,7 @@ cwd = pwd;
 stub_types = fieldnames(in);
 for k = 1:length(stub_types)
     stub_type = in.(stub_types{k});
-    fprintf('\nCreating symlinks for %s:\n', stub_types{k});
+    mp_printf('\nCreating symlinks for %s:\n', stub_types{k});
 
     %% create symlinkss
     for m = 1:length(stub_type.list)
@@ -86,7 +86,7 @@ for k = 1:length(stub_types)
         %% create destination directory if necessary
         dest_dir = fullfile(dest, rel_paths{:});
         if ~exist(dest_dir, 'dir')
-            fprintf('Creating directory ''%s''\n', dest_dir);
+            mp_printf('Creating directory ''%s''\n', dest_dir);
             success = mkdir(dest_dir);
             if ~success
                 error('generate_source_symlinks: unable to create directory ''%s''.', ...
@@ -118,7 +118,7 @@ for k = 1:length(stub_types)
                 sl_tgt = sprintf('%s/%s.m', tgt_dir, names{f});
             end
             if exist(sl_tgt)
-                fprintf('    %s/%s\n', stub_type.list(m).src_path, sl_src);
+                mp_printf('    %s/%s\n', stub_type.list(m).src_path, sl_src);
                 if exist(['./' sl_src])
                     delete(['./' sl_src]);
                 end
@@ -129,7 +129,7 @@ for k = 1:length(stub_types)
                 end
                 system(cmd);
             else
-                fprintf('    ----> target for %s does NOT exist\n', sl_src);
+                mp_printf('    ----> target for %s does NOT exist\n', sl_src);
             end
             
         end

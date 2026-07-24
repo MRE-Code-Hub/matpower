@@ -19,7 +19,7 @@ classdef dme_load3p < mp.dm_element
 %   ================  =========  =====================================
 
 %   MATPOWER
-%   Copyright (c) 2021-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2021-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -125,7 +125,7 @@ classdef dme_load3p < mp.dm_element
             pd = [ obj.tab.pd1 obj.tab.pd2 obj.tab.pd3 ];
             pf = [ obj.tab.pf1 obj.tab.pf2 obj.tab.pf3 ];
             qd = pd .* tan(acos(pf));
-            fprintf(fd, '  %-29s %12.1f kW %12.1f kVAr\n', 'Total 3-ph load', ...
+            mp_printf(fd, '  %-29s %12.1f kW %12.1f kVAr\n', 'Total 3-ph load', ...
                 sum(sum(pd(obj.on, :))), sum(sum(qd(obj.on, :))) );
         end
 

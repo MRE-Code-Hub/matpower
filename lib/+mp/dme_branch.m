@@ -42,7 +42,7 @@ classdef dme_branch < mp.dm_element
 %   ===========  =========  ========================================
 
 %   MATPOWER
-%   Copyright (c) 2020-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2020-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -188,8 +188,8 @@ classdef dme_branch < mp.dm_element
             end
 
             %% print line, transformer counts
-            fprintf(fd, '  %-20s%7s %7s %7s\n', '  Lines', ln_on, ln_off, ln);
-            fprintf(fd, '  %-20s%7s %7s %7s\n', '  Transformers', xf_on, xf_off, xf);
+            mp_printf(fd, '  %-20s%7s %7s %7s\n', '  Lines', ln_on, ln_off, ln);
+            mp_printf(fd, '  %-20s%7s %7s %7s\n', '  Transformers', xf_on, xf_off, xf);
         end
 
         function TorF = pp_have_section_sum(obj, mpopt, pp_args)
@@ -212,7 +212,7 @@ classdef dme_branch < mp.dm_element
             else
                 p_series_str = sprintf('%12.2f', p_series);
             end
-            fprintf(fd, '  %-29s  %12s MW', 'Total branch series losses', ...
+            mp_printf(fd, '  %-29s  %12s MW', 'Total branch series losses', ...
                  p_series_str);
             if mpopt.model(1) ~= 'D'    %% AC model
                 q_loss = sum(obj.tab.ql_fr(obj.on)) + sum(obj.tab.ql_to(obj.on));
@@ -224,15 +224,15 @@ classdef dme_branch < mp.dm_element
                 else
                     q_series_str = sprintf('%12.2f', q_series);
                 end
-                fprintf(fd, ' %12s MVAr', q_series_str);
+                mp_printf(fd, ' %12s MVAr', q_series_str);
             end
-            fprintf(fd, '\n');
+            mp_printf(fd, '\n');
             if abs(p_shunt) < obj.loss_tol
                 p_shunt_str = '- ';
             else
                 p_shunt_str = sprintf('%12.2f', p_shunt);
             end
-            fprintf(fd, '  %-29s  %12s MW', 'Total branch shunt losses', ...
+            mp_printf(fd, '  %-29s  %12s MW', 'Total branch shunt losses', ...
                 p_shunt_str );
             if mpopt.model(1) ~= 'D'    %% AC model
                 if abs(q_shunt) < obj.loss_tol
@@ -240,9 +240,9 @@ classdef dme_branch < mp.dm_element
                 else
                     q_shunt_str = sprintf('%12.2f', q_shunt);
                 end
-                fprintf(fd, ' %12s MVAr', q_shunt_str );
+                mp_printf(fd, ' %12s MVAr', q_shunt_str );
             end
-            fprintf(fd, '\n');
+            mp_printf(fd, '\n');
         end
 
         function h = pp_get_headers_det(obj, dm, out_e, mpopt, pp_args)

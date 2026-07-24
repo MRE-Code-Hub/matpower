@@ -26,7 +26,7 @@ function fname_out = savecase(fname, varargin)
 %   version 1 format before saving.
 
 %   MATPOWER
-%   Copyright (c) 1996-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 1996-2026, Power Systems Engineering Research Center (PSERC)
 %   by Carlos E. Murillo-Sanchez, PSERC Cornell & Universidad Nacional de Colombia
 %   and Ray Zimmerman, PSERC Cornell
 %
@@ -130,7 +130,7 @@ end
 if regexp(fcn_name, '\W')
     old_fcn_name = fcn_name;
     fcn_name = regexprep(fcn_name, '\W', '_');
-    fprintf('WARNING: ''%s'' is not a valid function name, changed to ''%s''\n', old_fcn_name, fcn_name);
+    mp_printf('WARNING: ''%s'' is not a valid function name, changed to ''%s''\n', old_fcn_name, fcn_name);
 end
 fname = fullfile(pathstr, [fcn_name extension]);
 

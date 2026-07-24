@@ -61,7 +61,7 @@ function [MVAbase, bus, gen, branch, success, et] = ...
 % See also rundcpf.
 
 %   MATPOWER
-%   Copyright (c) 1996-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 1996-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %   Enforcing of generator Q limits inspired by contributions
 %   from Mu Lin, Lincoln University, New Zealand (1/14/05).
@@ -188,12 +188,12 @@ if ~isempty(mpc.bus)
     its = 0;            %% total iterations
     if mpopt.verbose > 0
         v = mpver('all');
-        fprintf('\nMATPOWER Version %s, %s', v.Version, v.Date);
+        mp_printf('\nMATPOWER Version %s, %s', v.Version, v.Date);
     end
 
     if dc                               %% DC formulation
         if mpopt.verbose > 0
-          fprintf(' -- DC Power Flow\n');
+          mp_printf(' -- DC Power Flow\n');
         end
         its = 1;
 
@@ -261,7 +261,7 @@ if ~isempty(mpc.bus)
                 otherwise
                     solver = 'unknown';
             end
-            fprintf(' -- AC Power Flow (%s)\n', solver);
+            mp_printf(' -- AC Power Flow (%s)\n', solver);
         end
         switch alg
             case {'NR', 'NR-SP', 'NR-SC', 'NR-SH', 'NR-IP', 'NR-IC', 'NR-IH', 'FSOLVE'}  %% all 6 variants supported
@@ -381,7 +381,7 @@ if ~isempty(mpc.bus)
                         %% all remaining PV/REF gens are violating AND all are
                         %% violating same limit (all violating Qmin or all Qmax)
                         if mpopt.verbose
-                            fprintf('All %d remaining gens exceed their Q limits : INFEASIBLE PROBLEM\n', length(infeas));
+                            mp_printf('All %d remaining gens exceed their Q limits : INFEASIBLE PROBLEM\n', length(infeas));
                         end
                         success = 0;
                         break;
@@ -401,10 +401,10 @@ if ~isempty(mpc.bus)
                     end
 
                     if mpopt.verbose && ~isempty(mx)
-                        fprintf('Gen %d at upper Q limit, converting to PQ bus\n', mx);
+                        mp_printf('Gen %d at upper Q limit, converting to PQ bus\n', mx);
                     end
                     if mpopt.verbose && ~isempty(mn)
-                        fprintf('Gen %d at lower Q limit, converting to PQ bus\n', mn);
+                        mp_printf('Gen %d at lower Q limit, converting to PQ bus\n', mn);
                     end
 
                     %% save corresponding limit values
@@ -429,7 +429,7 @@ if ~isempty(mpc.bus)
                         bus(ref, BUS_TYPE) = REF;
                         bus( pv, BUS_TYPE) = PV;
                         if mpopt.verbose
-                            fprintf('Bus %d is new slack bus\n', ...
+                            mp_printf('Bus %d is new slack bus\n', ...
                                 mpc.order.bus.i2e(ref));
                         end
                     end
@@ -453,7 +453,7 @@ else
     success = 0;
     its = 0;
     if mpopt.verbose
-        fprintf('Power flow not valid : MATPOWER case contains no connected buses\n');
+        mp_printf('Power flow not valid : MATPOWER case contains no connected buses\n');
     end
 end
 [mpc.bus, mpc.gen, mpc.branch] = deal(bus, gen, branch);

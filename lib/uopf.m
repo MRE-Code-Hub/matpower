@@ -54,7 +54,7 @@ function [bus, gen, branch, f, success, info, et, g, jac, xr, pimul] = ...
 % See also opf, runuopf.
 
 %   MATPOWER
-%   Copyright (c) 1996-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 1996-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -93,7 +93,7 @@ while sum(Pmin) > load_capacity
     i = on(i);                          %% convert to generator index
 
     if mpopt.verbose
-        fprintf('Shutting down generator %d so all Pmin limits can be satisfied.\n', i);
+        mp_printf('Shutting down generator %d so all Pmin limits can be satisfied.\n', i);
     end
 
     %% set generation to zero
@@ -110,7 +110,7 @@ if ~any(mpc.gen(:, GEN_STATUS) > 0)     %% don't bother to run anything if
     results0.f = NaN;
     results0.et = 0;
     if mpopt.verbose
-        fprintf('Infeasible problem, Pmin limits cannot be satisfied without shutting down all generators.\n');
+        mp_printf('Infeasible problem, Pmin limits cannot be satisfied without shutting down all generators.\n');
     end
 else
     %% run initial opf
@@ -160,7 +160,7 @@ else
         else
             %% shutting something else down helps, so let's keep going
             if mpopt.verbose
-                fprintf('Shutting down generator %d.\n', k1);
+                mp_printf('Shutting down generator %d.\n', k1);
             end
         
             results0 = results1;

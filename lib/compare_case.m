@@ -8,7 +8,7 @@ function compare_case(mpc1, mpc2)
 %   prints the maximum of any non-zero differences.
 
 %   MATPOWER
-%   Copyright (c) 1996-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 1996-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -121,54 +121,54 @@ if solvedPF
 end
 
 %% print results
-fprintf('----------------  --------------  --------------  --------------  -----\n');
-fprintf(' matrix / col         case 1          case 2        difference     row \n');
-fprintf('----------------  --------------  --------------  --------------  -----\n');
+mp_printf('----------------  --------------  --------------  --------------  -----\n');
+mp_printf(' matrix / col         case 1          case 2        difference     row \n');
+mp_printf('----------------  --------------  --------------  --------------  -----\n');
 
 %% bus comparison
 [temp, i] = max(abs(bus1(:, 1:Nb) - bus2(:, 1:Nb)));
 [v, gmax] = max(temp);
 i = i(gmax);
-fprintf('bus');
+mp_printf('bus');
 nodiff = ' : no differences found';
 for j = 1:size(buscols, 1)
     [v, i] = max(abs(bus1(:, j) - bus2(:, j)));
     if v
         nodiff = '';
         if j == gmax, s = ' *'; else s = ''; end
-        fprintf('\n  %-12s%16g%16g%16g%7d%s', buscols(j, :), bus1(i, j), bus2(i, j), v, i, s );
+        mp_printf('\n  %-12s%16g%16g%16g%7d%s', buscols(j, :), bus1(i, j), bus2(i, j), v, i, s );
     end
 end
-fprintf('%s\n', nodiff);
+mp_printf('%s\n', nodiff);
 
 %% gen comparison
 [temp, i] = max(abs(gen1(:, 1:Ng) - gen2(:, 1:Ng)));
 [v, gmax] = max(temp);
 i = i(gmax);
-fprintf('\ngen');
+mp_printf('\ngen');
 nodiff = ' : no differences found';
 for j = 1:size(gencols, 1)
     [v, i] = max(abs(gen1(:, j) - gen2(:, j)));
     if v
         nodiff = '';
         if j == gmax, s = ' *'; else s = ''; end
-        fprintf('\n  %-12s%16g%16g%16g%7d%s', gencols(j, :), gen1(i, j), gen2(i, j), v, i, s );
+        mp_printf('\n  %-12s%16g%16g%16g%7d%s', gencols(j, :), gen1(i, j), gen2(i, j), v, i, s );
     end
 end
-fprintf('%s\n', nodiff);
+mp_printf('%s\n', nodiff);
 
 %% branch comparison
 [temp, i] = max(abs(branch1(:, 1:Nl) - branch2(:, 1:Nl)));
 [v, gmax] = max(temp);
 i = i(gmax);
-fprintf('\nbranch');
+mp_printf('\nbranch');
 nodiff = ' : no differences found';
 for j = 1:size(brcols, 1)
     [v, i] = max(abs(branch1(:, j) - branch2(:, j)));
     if v
         nodiff = '';
         if j == gmax, s = ' *'; else s = ''; end
-        fprintf('\n  %-12s%16g%16g%16g%7d%s', brcols(j, :), branch1(i, j), branch2(i, j), v, i, s );
+        mp_printf('\n  %-12s%16g%16g%16g%7d%s', brcols(j, :), branch1(i, j), branch2(i, j), v, i, s );
     end
 end
-fprintf('%s\n', nodiff);
+mp_printf('%s\n', nodiff);

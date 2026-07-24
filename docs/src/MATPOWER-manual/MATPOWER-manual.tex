@@ -3340,36 +3340,36 @@ r = results.reserves;
 ng = length(r.R);
 nrz = size(r.req, 1);
 if mpopt.out.all ~= 0
-    fprintf(fd, '\n=======================================================');
-    fprintf(fd, '\n|     Reserves                                        |');
-    fprintf(fd, '\n=======================================================');
-    fprintf(fd, '\n Gen   Bus   Status  Reserves   Price');
-    fprintf(fd, '\n  #     #              (MW)     ($/MW)');
-    fprintf(fd, '\n----  -----  ------  --------  --------');
+    mp_printf(fd, '\n=======================================================');
+    mp_printf(fd, '\n|     Reserves                                        |');
+    mp_printf(fd, '\n=======================================================');
+    mp_printf(fd, '\n Gen   Bus   Status  Reserves   Price');
+    mp_printf(fd, '\n  #     #              (MW)     ($/MW)');
+    mp_printf(fd, '\n----  -----  ------  --------  --------');
     for k = 1:ng
-        fprintf(fd, '\n%3d %6d     %2d ', k, results.gen(k, GEN_BUS), ...
+        mp_printf(fd, '\n%3d %6d     %2d ', k, results.gen(k, GEN_BUS), ...
                     results.gen(k, GEN_STATUS));
         if results.gen(k, GEN_STATUS) > 0 && abs(results.reserves.R(k)) > 1e-6
-            fprintf(fd, '%10.2f', results.reserves.R(k));
+            mp_printf(fd, '%10.2f', results.reserves.R(k));
         else
-            fprintf(fd, '       -  ');
+            mp_printf(fd, '       -  ');
         end
-        fprintf(fd, '%10.2f     ', results.reserves.prc(k));
+        mp_printf(fd, '%10.2f     ', results.reserves.prc(k));
     end
-    fprintf(fd, '\n                     --------');
-    fprintf(fd, '\n            Total:%10.2f              Total Cost: $%.2f', ...
+    mp_printf(fd, '\n                     --------');
+    mp_printf(fd, '\n            Total:%10.2f              Total Cost: $%.2f', ...
         sum(results.reserves.R(r.igr)), results.reserves.totalcost);
-    fprintf(fd, '\n');
+    mp_printf(fd, '\n');
     
-    fprintf(fd, '\nZone  Reserves   Price  ');
-    fprintf(fd, '\n  #     (MW)     ($/MW) ');
-    fprintf(fd, '\n----  --------  --------');
+    mp_printf(fd, '\nZone  Reserves   Price  ');
+    mp_printf(fd, '\n  #     (MW)     ($/MW) ');
+    mp_printf(fd, '\n----  --------  --------');
     for k = 1:nrz
         iz = find(r.zones(k, :));     %% gens in zone k
-        fprintf(fd, '\n%3d%10.2f%10.2f', k, sum(results.reserves.R(iz)), ...
+        mp_printf(fd, '\n%3d%10.2f%10.2f', k, sum(results.reserves.R(iz)), ...
                     results.lin.mu.l.Rreq(k) / results.baseMVA);
     end
-    fprintf(fd, '\n');
+    mp_printf(fd, '\n');
 
     %% print binding reserve limit multipliers ...
 end
