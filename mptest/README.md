@@ -36,8 +36,9 @@ of MATLAB or Octave, including setting up your MATLAB/Octave path.
   t_test_fcns.......ok
   t_debug_assert....ok
   t_have_feature....ok
-  All tests successful (37 of 37)
-  Elapsed time 0.13 seconds.
+  t_mp_logger.......ok
+  All tests successful (51 of 51)
+  Elapsed time 0.20 seconds.
 ```
 
 Usage
@@ -272,6 +273,35 @@ particular function.
   returns a struct with the fields `Name`, `Version`, `Release` and `Date`
   (all char arrays). Calling `mptestver` without assigning the return value
   prints the version and release date of the current installation of MP-Test.
+
+- __mp_disp__ — drop-in replacement for `disp()`
+  ```
+  mp_disp(obj)
+  ```
+  Optionally redirects the output of `disp()` to a file via an `mp.logger`
+  object, or elsewhere via a custom `mp.logger` subclass.
+
+- __mp_printf__ — drop-in replacement for `fprintf()`
+  ```
+  mp_printf(format_str, arg1, ...)
+  mp_printf(fid, format_str, arg1, ...)
+  ```
+  Optionally redirects the output of `fprintf()` to a file via an `mp.logger`
+  object, or elsewhere via a custom `mp.logger` subclass. If the first
+  argument is a file ID, it does not redirect anything.
+
+- __mp.logger_manager__ — manage redirection for `mp_disp()` and `mp_printf()`
+  ```
+  mp.logger.manager('init', 'path/to/my/log-file.txt')
+  mp_disp(obj)
+  mp_printf(format_str, arg1, ...)
+  mp.logger.manager('init', 'different-log-file.txt')
+  mp_disp(obj)
+  mp_printf(format_str, arg1, ...)
+  mp.logger.manager('clear')
+  ```
+  Used to manage the `mp.logger` object that handles any output redirection
+  for `mp_disp()` and `mp_printf()`.
 
 
 #### Private Functions

@@ -15,7 +15,7 @@ function success = test_mptest(verbose, exit_on_fail)
 % See also t_run_tests.
 
 %   MP-Test
-%   Copyright (c) 2016-2025, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2016-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MP-Test.
@@ -35,6 +35,7 @@ tests = {};
 tests{end+1} = 't_test_fcns';
 tests{end+1} = 't_debug_assert';
 tests{end+1} = 't_have_feature';
+tests{end+1} = 't_mp_logger';
 
 %% run the tests
 all_ok = t_run_tests( tests, verbose );

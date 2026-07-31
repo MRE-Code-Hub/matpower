@@ -41,7 +41,7 @@ function ok = t_is(got, expected, prec, msg)
 % See also t_ok, t_file_match, t_str_match, t_skip, t_begin, t_end, t_run_tests.
 
 %   MP-Test
-%   Copyright (c) 2004-2025, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2004-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MP-Test.
@@ -128,9 +128,16 @@ t_ok(condition, msg);
 if ~condition && ~t_quiet
     if max_diff > 0
         k = find(~(abs(got_minus_expected(:)) < 10^(-prec)) & ~isnan(got_minus_expected(:)));
-        [vv, kk] = max(abs(got_minus_expected(k)));
-        fprintf('    index              got             expected      abs(got - exp)\n');
-        fprintf('---------------  ----------------  ----------------  ----------------');
+        nk = length(k);
+        mp_printf('    index              got             expected      abs(got - exp)\n');
+        mp_printf('---------------  ----------------  ----------------  ----------------');
+        if nk > 15
+            [~, kk] = sort(abs(got_minus_expected(k)), 'descend');
+            k = k(kk(1:10));
+            kk = 1;
+        else
+            [~, kk] = max(abs(got_minus_expected(k)));
+        end
         for u = 1:length(k)
             if isscalar(expected)
                 ex = expected;
@@ -146,30 +153,33 @@ if ~condition && ~t_quiet
                 idxstr = sprintf('(%s%d)', idxstr, idx{end});
             end
             if cplx
-                fprintf('\n%14s  %16s  %16s  %16g', ...
+                mp_printf('\n%14s  %16s  %16s  %16g', ...
                     idxstr, format_complex(full(got(k(u))), '%g'), ...
                             format_complex(full(ex), '%g'), full(abs(got(k(u)) - ex)));
             else
-                fprintf('\n%14s  %16g  %16g  %16g', ...
+                mp_printf('\n%14s  %16g  %16g  %16g', ...
                     idxstr, full(got(k(u))), full(ex), full(abs(got(k(u)) - ex)));
             end
             if u == kk
-                fprintf('  *');
+                mp_printf('  *');
                 idxstrkk = idxstr;
             end
         end
-        fprintf('\nmax diff @ %s = %g > allowed tol of %g\n\n', ...
+        if nk > 15
+            mp_printf('\n ... and %d more ...', nk-10);
+        end
+        mp_printf('\nmax diff @ %s = %g > allowed tol of %g\n\n', ...
             idxstrkk, full(max_diff), 10^(-prec));
     elseif max_diff == -1
-        fprintf('    mismatch in locations of NaNs\n');
+        mp_printf('    mismatch in locations of NaNs\n');
     else
         gidxstr = sprintf('%d x ', gdims(1:end-1));
         gidxstr = sprintf('%s%d', gidxstr, gdims(end));
         eidxstr = sprintf('%d x ', edims(1:end-1));
         eidxstr = sprintf('%s%d', eidxstr, edims(end));
-        fprintf('    dimension mismatch:\n');
-        fprintf('             got: %s\n', gidxstr);
-        fprintf('        expected: %s\n\n', eidxstr);
+        mp_printf('    dimension mismatch:\n');
+        mp_printf('             got: %s\n', gidxstr);
+        mp_printf('        expected: %s\n\n', eidxstr);
     end
 end
 if nargout

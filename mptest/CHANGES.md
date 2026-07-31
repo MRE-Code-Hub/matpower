@@ -2,6 +2,23 @@ Change history for MP-Test
 ==========================
 
 
+since 8.1
+---------
+
+#### 7/30/26
+  - Use recently added `mp_printf()` in place of `fprintf()` everywhere to
+    allow redirecting of console output.
+  - Add `mp.logger` class, and `mp_printf()` and `mp_disp()` functions
+    which can be used as drop-in replacements for `fprintf()` and `disp()`.
+    By default they behave identically, but can use an `mp.logger` object to
+    redirect the output to a file, or elsewhere via a custom `mp.logger`
+    subclass.
+
+#### 6/15/26
+  - Limit `t_is()` display to top 10 toleration violations if there are
+    more than 15 elements that do not meet the desired tolerance.
+
+
 Version 8.1 - *July 5, 2024*
 ----------------------------
 
