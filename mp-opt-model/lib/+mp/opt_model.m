@@ -31,6 +31,7 @@ classdef opt_model < handle
 %   * copy - make a duplicate of the object
 %   * to_struct - convert object data *to* a struct
 %   * from_struct - copy object data *from* a struct
+%   * clear_cached_params - clears parameters cached by set type objects
 %   * get_idx - return ``idx`` struct for vars, constraints, costs
 %   * get_userdata - used to retrieve values of user data
 %   * problem_type - return string identifying type of mathematical program
@@ -66,7 +67,7 @@ classdef opt_model < handle
 % See also mp.set_manager.
 
 %   MP-Opt-Model
-%   Copyright (c) 2008-2025, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2008-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MP-Opt-Model.
@@ -254,6 +255,24 @@ classdef opt_model < handle
             for k = 1:length(st)
                 mm.(st{k}) = mp.struct2object(mm.(st{k}));
             end
+        end
+
+        function clear_cached_params(obj)
+            % Clear cached parameters.
+            % ::
+            %
+            %   mm.clear_cached_params()
+            %
+            % Clears any parameters that were cached by set types in each of
+            % the  :attr:`var`, :attr:`lin`, :attr:`qcn` and :attr:`qdc`
+            % properties by calling the 
+            % :meth:`clear_cached_params() <mp.set_manager_opt_model.clear_cached_params>`
+            % method on each.
+
+            obj.lin.clear_cached_params();
+            obj.var.clear_cached_params();
+            obj.qcn.clear_cached_params();
+            obj.qdc.clear_cached_params();
         end
 
         function varargout = get_idx(mm, varargin)
@@ -517,25 +536,7 @@ classdef opt_model < handle
             %   TorF (logical): true or false, indicating whether any of the
             %       variables are binary or integer
 
-            TorF = 0;
-            if mm.var.get_N()
-                for k = 1:length(mm.var.order)
-                    t = mm.var.data.vt.(mm.var.order(k).name);
-                    if iscell(t)
-                        for j = 1:length(t(:))
-                            if any(t{j} ~= 'C')
-                                TorF = 1;
-                                break;
-                            end
-                        end
-                    else
-                        if any(t ~= 'C')
-                            TorF = 1;
-                            break;
-                        end
-                    end
-                end
-            end
+            TorF = ~mm.var.are_all_continuous();
         end
 
         function TorF = is_solved(mm)
@@ -793,13 +794,34 @@ classdef opt_model < handle
                     [HH, CC, C0] = mm.qdc.params(mm.var);
                     [Q, B, ll, uu] = mm.qcn.params(mm.var);
                     [A, l, u] = mm.lin.params(mm.var);
-                    [mixed_integer, x0, xmin, xmax, vtype] = ...
+                    [mixed_integer, x0, xmin, xmax, vtype, i] = ...
                         mm.mixed_integer_helper(opt);
                     if mixed_integer
                         %% run solver
                         if isempty(Q)          %% MILP, MIQP - mixed integer linear/quadratic program
-                            [x, f, eflag, output, lambda] = ...
-                                miqps_master(HH, CC, A, l, u, xmin, xmax, x0, vtype, opt);
+                            if isempty(i)
+                                [x, f, eflag, output, lambda] = ...
+                                    miqps_master(HH, CC, A, l, u, xmin, xmax, x0, vtype, opt);
+                            else
+                                if isfield(opt, 'lazy') && ~isempty(opt.lazy)
+                                    opt.lazy = opt.lazy(i);
+                                end
+                                [x, f, eflag, output, lambda] = ...
+                                    miqps_master(HH, CC, A(i, :), l(i), u(i), xmin, xmax, x0, vtype, opt);
+                                mu_l = lambda.mu_l;
+                                mu_u = lambda.mu_u;
+                                lambda.mu_l = zeros(size(A, 1), 1);
+                                lambda.mu_u = lambda.mu_l;
+                                lambda.mu_l(i) = mu_l;
+                                lambda.mu_u(i) = mu_u;
+                                active_constraints = false(size(A, 1), 1);
+                                if isfield(output, 'active_constraints')
+                                    active_constraints(i) = output.active_constraints;
+                                else
+                                    active_constraints(i) = true;
+                                end
+                                output.active_constraints = active_constraints;
+                            end
                         else                   %% MIQCQP - mixed integer quadratically constrained quadratic program
                             % To be implemented ...
                             % [x, f, eflag, output, lambda] = ...
@@ -808,8 +830,22 @@ classdef opt_model < handle
                     else                %% LP, QP - linear/quadratic program
                         %% run solver
                         if isempty(Q)          %% LP, QP - linear/quadratic program
-                            [x, f, eflag, output, lambda] = ...
-                                qps_master(HH, CC, A, l, u, xmin, xmax, x0, opt);
+                            if isempty(i)
+                                [x, f, eflag, output, lambda] = ...
+                                    qps_master(HH, CC, A, l, u, xmin, xmax, x0, opt);
+                            else
+                                if isfield(opt, 'lazy') && ~isempty(opt.lazy)
+                                    opt.lazy = opt.lazy(i);
+                                end
+                                [x, f, eflag, output, lambda] = ...
+                                    qps_master(HH, CC, A(i, :), l(i), u(i), xmin, xmax, x0, opt);
+                                mu_l = lambda.mu_l;
+                                mu_u = lambda.mu_u;
+                                lambda.mu_l = zeros(size(A, 1), 1);
+                                lambda.mu_u = lambda.mu_l;
+                                lambda.mu_l(i) = mu_l;
+                                lambda.mu_u(i) = mu_u;
+                            end
                         else                   %% QCQP - quadratically constrained quadratic program
                             [x, f, eflag, output, lambda] = ...
                                 qcqps_master(HH, CC, Q, B, ll, uu, A, l, u, xmin, xmax, x0, opt);
@@ -959,7 +995,7 @@ classdef opt_model < handle
             set_types = mm.get_set_types();
             set_types = horzcat(set_types, more_set_types);
             % set_types = {'var', 'nle', 'nli', 'lin', 'qcn', 'qdc', 'nlc', more_set_types{:}};
-            fprintf('\n');
+            mp_printf('\n');
             for k = 1:length(set_types)
                 mm.(set_types{k}).display(set_types{k});
             end
@@ -976,7 +1012,7 @@ classdef opt_model < handle
             % Called automatically by display, *before* displaying each
             % set type.
 
-            fprintf('CLASS : %s\n', class(mm));
+            mp_printf('CLASS : %s\n', class(mm));
         end
 
         function mm = display_footer(mm)
@@ -991,17 +1027,17 @@ classdef opt_model < handle
             %% user data
             fields = fieldnames(mm.userdata);
             if ~isempty(fields)
-                fprintf('\nUSER DATA\n')
-                fprintf('=========\n')
-                fprintf('  name                               size       class\n');
-                fprintf(' ------------------------------   -----------  --------------------\n');
+                mp_printf('\nUSER DATA\n')
+                mp_printf('=========\n')
+                mp_printf('  name                               size       class\n');
+                mp_printf(' ------------------------------   -----------  --------------------\n');
                 for k = 1:length(fields)
                     f = mm.userdata.(fields{k});
                     [m, n] = size(f);
-                    fprintf('  %-31s %5dx%-5d   %s\n', fields{k}, m, n, class(f));
+                    mp_printf('  %-31s %5dx%-5d   %s\n', fields{k}, m, n, class(f));
                 end
             else
-                fprintf('USER DATA                   :  <none>\n');
+                mp_printf('USER DATA                   :  <none>\n');
             end
         end
 
@@ -1108,13 +1144,13 @@ classdef opt_model < handle
                     end
                 end             %% loop over set types
             else
-                fprintf(fid, 'Not a solved model.\n');
+                mp_printf(fid, 'Not a solved model.\n');
             end
         end
     end     %% methods
 
     methods (Access=protected)
-        function [mixed_integer, x0, xmin, xmax, vtype] = mixed_integer_helper(mm, opt)
+        function [mixed_integer, x0, xmin, xmax, vtype, active_constraints] = mixed_integer_helper(mm, opt)
             %
             pt = mm.problem_type();
             mixed_integer = strcmp(pt(1:2), 'MI') && ...
@@ -1122,24 +1158,27 @@ classdef opt_model < handle
             if mixed_integer
                 %% optimization vars, bounds, types
                 [x0, xmin, xmax, vtype] = mm.var.params();
-                if isfield(opt, 'x0')
-                    x0 = opt.x0;
-                end
-
-%                 if isfield(opt, 'fix_integer') && opt.fix_integer
-%                     %% fix integer variables
-%                     j = find(vtype == 'B' | vtype == 'I')';
-%                     xmin(j) = x0(j);
-%                     xmax(j) = x0(j);
-%                     mixed_integer = false;
-%                 end
             else
                 %% optimization vars, bounds, types
                 [x0, xmin, xmax] = mm.var.params();
-                if isfield(opt, 'x0')
-                    x0 = opt.x0;
-                end
                 vtype = [];
+            end
+            if isfield(opt, 'ignore_x0') && opt.ignore_x0
+                x0 = [];
+            elseif isfield(opt, 'x0')
+                x0 = opt.x0;
+            end
+            if nargout > 5 && isfield(opt, 'active_constraints') && ...
+                    ~isempty(opt.active_constraints)
+                if islogical(opt.active_constraints) && length(opt.active_constraints) == mm.lin.N || ...
+                        min(opt.active_constraints) >= 1 && max(opt.active_constraints) <= mm.lin.n
+                    active_constraints = opt.active_constraints;
+                else
+                    warning('mp.opt_model.solve: opt.active_constraints is being ignored since it is not consistent with the full constraint matrix');
+                    active_constraints = [];
+                end
+            else
+                active_constraints = [];
             end
         end
     end

@@ -11,6 +11,7 @@ classdef sm_variable < mp.set_manager_opt_model
 % By convention, ``var`` is the variable name used for mp.sm_variable objects.
 %
 % mp.sm_variable Properties:
+%   * all_continuous - true if all variables are continuous, false otherwise
 %   * cache - struct for caching aggregated parameters for the set
 %
 % mp.sm_variable Methods:
@@ -21,6 +22,7 @@ classdef sm_variable < mp.set_manager_opt_model
 %   * display_soln - display solution values for variables
 %   * get_soln - fetch solution values for specific named/indexed subsets
 %   * parse_soln - parse solution for variables
+%   * are_all_continuous - return true if all variables are continuous, false otherwise
 %   * varsets_idx - return vector of indices into full :math:`\x` corresponding to ``vs``
 %   * varsets_len - return the total number of variables specified by ``vs``
 %   * varsets_x - return subset of :math:`\x` specified by ``vs``
@@ -29,7 +31,7 @@ classdef sm_variable < mp.set_manager_opt_model
 % See also mp.set_manager, mp.set_manager_opt_model.
 
 %   MP-Opt-Model
-%   Copyright (c) 2008-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2008-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MP-Opt-Model.
@@ -37,6 +39,7 @@ classdef sm_variable < mp.set_manager_opt_model
 %   See https://github.com/MATPOWER/mp-opt-model for more info.
 
     properties
+        all_continuous = [];
         % struct for caching aggregated parameters for variables
         cache = [];
     end     %% properties
@@ -173,8 +176,16 @@ classdef sm_variable < mp.set_manager_opt_model
                 obj.data.vu = subsasgn(obj.data.vu, sc, vu);    %% upper bound
                 obj.data.vt = subsasgn(obj.data.vt, sc, vt);    %% variable type
             end
+
+            %% update all_continuous
+            if isempty(obj.all_continuous)
+                obj.all_continuous = obj.are_all_continuous();
+            else
+                obj.all_continuous = obj.all_continuous && all(vt == 'C');
+            end
+
             if ~isempty(obj.cache)  %% clear cache of aggregated params
-                obj.cache = [];
+                obj.clear_cached_params();
             end
         end
 
@@ -214,7 +225,7 @@ classdef sm_variable < mp.set_manager_opt_model
             %
             % See also add, set_params.
 
-            if nargout > 3
+            if nargout > 3 || ~obj.are_all_continuous()
                 have_vt = 1;
             else
                 have_vt = 0;
@@ -465,12 +476,21 @@ classdef sm_variable < mp.set_manager_opt_model
             end
 
             %% clear cached parameters
-            obj.cache = [];
+            obj.clear_cached_params();
 
             %% update dimensions and indexing, if necessary
             dN = N - N0;
             if is_all && dN
                 obj.set_params_update_dims(dN, name, idx);
+            end
+
+            %% update all_continuous
+            if u.vt
+                if isempty(obj.all_continuous)
+                    obj.all_continuous = obj.are_all_continuous();
+                else
+                    obj.all_continuous = obj.all_continuous && all(p.vt == 'C');
+                end
             end
         end
 
@@ -556,21 +576,21 @@ classdef sm_variable < mp.set_manager_opt_model
                     else
                         ub = obj.sprintf_num(8, vu(idxs(k)));
                     end
-                    fprintf(fid, '%9s%9s%9s%9s%9s\n', ...
+                    mp_printf(fid, '%9s%9s%9s%9s%9s\n', ...
                         mu_lb, lb, obj.sprintf_num(8, v(idxs(k))), ub, mu_ub);
                 end
 
                 %% print footer rows
-                fprintf(fid, '%s\n', [hdr1{2} hdr2{2}]);
-                fprintf(fid, '%7s %-28s%9s%9s%9s%9s%9s\n', '', 'Min', ...
+                mp_printf(fid, '%s\n', [hdr1{2} hdr2{2}]);
+                mp_printf(fid, '%7s %-28s%9s%9s%9s%9s%9s\n', '', 'Min', ...
                     obj.sprintf_num(8, min(mu_l)), obj.sprintf_num(8, min(vl)), ...
                     obj.sprintf_num(8, min(v)), ...
                     obj.sprintf_num(8, min(vu)), obj.sprintf_num(8, min(mu_u)));
-                fprintf(fid, '%7s %-28s%9s%9s%9s%9s%9s\n', '', 'Max', ...
+                mp_printf(fid, '%7s %-28s%9s%9s%9s%9s%9s\n', '', 'Max', ...
                     obj.sprintf_num(8, max(mu_l)), obj.sprintf_num(8, max(vl)), ...
                     obj.sprintf_num(8, max(v)), ...
                     obj.sprintf_num(8, max(vu)), obj.sprintf_num(8, max(mu_u)));
-                fprintf(fid, '\n');
+                mp_printf(fid, '\n');
             end
         end
 
@@ -699,6 +719,42 @@ classdef sm_variable < mp.set_manager_opt_model
 
             if nargin > 2 && stash
                 obj.soln = ps;
+            end
+        end
+
+        function TorF = are_all_continuous(obj)
+            % Return true if all variables are continuous, false otherwise.
+            % ::
+            %
+            %   TorF = var.are_all_continuous();
+            %
+            % Output:
+            %   TorF (logical) : true if all variables are continuous,
+            %       false otherwise.
+
+            if isempty(obj.all_continuous)
+                %% evaluate and cache value
+                TorF = true;
+                if obj.get_N()
+                    for k = 1:length(obj.order)
+                        t = obj.data.vt.(obj.order(k).name);
+                        if iscell(t)
+                            for j = 1:length(t(:))
+                                if any(t{j} ~= 'C')
+                                    TorF = false;
+                                    break;
+                                end
+                            end
+                        else
+                            if any(t ~= 'C')
+                                TorF = false;
+                                break;
+                            end
+                        end
+                    end
+                end
+            else    %% use cached value in all_continous property
+                TorF = obj.all_continuous;
             end
         end
 

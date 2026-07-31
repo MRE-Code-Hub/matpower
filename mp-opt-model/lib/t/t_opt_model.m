@@ -2,7 +2,7 @@ function t_opt_model(quiet)
 % t_opt_model - Tests for opt_model.
 
 %   MP-Opt-Model
-%   Copyright (c) 2012-2025, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2012-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MP-Opt-Model.
@@ -105,7 +105,7 @@ for i = 1:2
                 vt = char(vt0{j} * ones(1, n));
                 vt(j+1) = vt0{1+rem(j,3)};
             end
-%             fprintf('%d %d %d : %s\n', i, j, k, vt);
+%             mp_printf('%d %d %d : %s\n', i, j, k, vt);
             t = sprintf('om.add_var(''y'', {%d,%d,%d}, y0, ymin, ymax, vt)', i,j,k);
             om.add_var('y', {i,j,k}, n, 10*(n:-1:1)', -1*(n:-1:1)', 100+(n:-1:1)', vt);
             vNS = vNS + 1; vN = vN + n;
@@ -1474,7 +1474,7 @@ if have_feature('isequaln')
     t = 'om.set_params(''var'', name, ...) : ';
     val = [1:4]';
     s.var.data.v0.Va = val;
-    s.var.cache = [];   % remove cache, as set_params() does
+    s.var.clear_cached_params();    % remove cache, as set_params() does
     om.set_params('var', 'Va', 'v0', val);
     t_ok(isequaln(struct(om), s), [t 'Va, v0']);
 
@@ -1533,7 +1533,7 @@ if have_feature('isequaln')
 
     val = sparse(m, n);
     s.lin.data.A.Qmis = val;
-    s.lin.cache = [];   % remove cache, as set_params() does
+    s.lin.clear_cached_params();    % remove cache, as set_params() does
     om.set_params('lin', 'Qmis', 'A', val);
     t_ok(isequaln(struct(om), s), [t 'Qmis, A']);
 
@@ -1609,7 +1609,7 @@ if have_feature('isequaln')
 
     val = repmat({sparse(mi, ni)}, m, n);
     s.qcn.data.Q.Qmis = val;
-    s.qcn.cache = [];   % remove cache, as set_params() does
+    s.qcn.clear_cached_params();    % remove cache, as set_params() does
     om.qcn.set_params(om.var, 'Qmis', 'Q', val);
     t_ok(isequaln(struct(om), s), [t 'Qmis, Q']);
 
@@ -1820,7 +1820,7 @@ if have_feature('isequaln')
 
     val = sparse(m, n);
     s.qdc.data.Q.qc1 = val;
-    s.qdc.cache = [];   % remove cache, as set_params() does
+    s.qdc.clear_cached_params();    % remove cache, as set_params() does
     om.set_params('qdc', 'qc1', 'Q', val);
     t_ok(isequaln(struct(om), s), [t 'qc1, Q']);
 
