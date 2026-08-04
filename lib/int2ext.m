@@ -36,7 +36,7 @@ function [bus, gen, branch, areas] = int2ext(i2e, bus, gen, branch, areas)
 % See also ext2int, i2e_field, i2e_data.
 
 %   MATPOWER
-%   Copyright (c) 1996-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 1996-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -149,7 +149,7 @@ if isstruct(i2e)
         bus = mpc;
     else                    %% convert extra data
         if ischar(bus) || iscell(bus)   %% field
-            warning('Calls of the form MPC = INT2EXT(MPC, ''FIELD_NAME'', ...) have been deprecated. Please replace INT2EXT with I2E_FIELD.');
+            mp_warning('Calls of the form MPC = INT2EXT(MPC, ''FIELD_NAME'', ...) have been deprecated. Please replace INT2EXT with I2E_FIELD.');
             if nargin > 3
                 dim = branch;
             else
@@ -157,7 +157,7 @@ if isstruct(i2e)
             end
             bus = i2e_field(mpc, bus, gen, dim);
         else                            %% value
-            warning('Calls of the form VAL = INT2EXT(MPC, VAL, ...) have been deprecated. Please replace INT2EXT with I2E_DATA.');
+            mp_warning('Calls of the form VAL = INT2EXT(MPC, VAL, ...) have been deprecated. Please replace INT2EXT with I2E_DATA.');
             if nargin > 4
                 dim = areas;
             else

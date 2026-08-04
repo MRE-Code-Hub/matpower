@@ -380,7 +380,7 @@ else                                %% M-file
         if isfield(mpc, 'gentype') && iscell(mpc.gentype)
             ng = length(mpc.gentype);
             if size(mpc.gen, 1) ~= ng
-                warning('savecase: gentype field does not have the expected dimensions (length = %d, expected %d)', ng, size(mpc.gen, 1));
+                mp_warning('savecase: gentype field does not have the expected dimensions (length = %d, expected %d)', ng, size(mpc.gen, 1));
             end
 
             fprintf(fd, '\n%%%% generator unit type (see GENTYPES)\n');
@@ -395,7 +395,7 @@ else                                %% M-file
         if isfield(mpc, 'genfuel') && iscell(mpc.genfuel)
             ng = length(mpc.genfuel);
             if size(mpc.gen, 1) ~= ng
-                warning('savecase: genfuel field does not have the expected dimensions (length = %d, expected %d)', ng, size(mpc.gen, 1));
+                mp_warning('savecase: genfuel field does not have the expected dimensions (length = %d, expected %d)', ng, size(mpc.gen, 1));
             end
 
             fprintf(fd, '\n%%%% generator fuel type (see GENFUELS)\n');
@@ -410,7 +410,7 @@ else                                %% M-file
         if isfield(mpc, 'bus_name') && iscell(mpc.bus_name)
             nb = length(mpc.bus_name);
             if size(mpc.bus, 1) ~= nb
-                warning('savecase: bus_name field does not have the expected dimensions (length = %d, expected %d)', nb, size(mpc.bus, 1));
+                mp_warning('savecase: bus_name field does not have the expected dimensions (length = %d, expected %d)', nb, size(mpc.bus, 1));
             end
 
             fprintf(fd, '\n%%%% bus names\n');

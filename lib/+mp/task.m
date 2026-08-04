@@ -194,7 +194,7 @@ classdef (Abstract) task < handle
                 persistent show_octave11_warning_once;
                 if isempty(show_octave11_warning_once)
                     show_octave11_warning_once = 1;
-                    warning(sprintf('\n###############################################################################\n#  GNU Octave 11.x has a bug (https://savannah.gnu.org/bugs/index.php?68227)  #\n#  that results in lots of warnings when running MATPOWER. One workaround is  #\n#  to turn off all warnings using:  warning off                               #\n###############################################################################\n'));
+                    mp_warning(sprintf('\n###############################################################################\n#  GNU Octave 11.x has a bug (https://savannah.gnu.org/bugs/index.php?68227)  #\n#  that results in lots of warnings when running MATPOWER. One workaround is  #\n#  to turn off all warnings using:  warning off                               #\n###############################################################################\n'));
                 end
             end
 
@@ -423,7 +423,7 @@ classdef (Abstract) task < handle
             if fname
                 [fd, msg] = fopen(fname, 'at');
                 if fd == -1
-                    warning('mp.task/print_soln: could not open file ''%s'' for writing\n%s', fname, msg);
+                    mp_warning('mp.task/print_soln: could not open file ''%s'' for writing\n%s', fname, msg);
                 else
                     obj.print_soln_header(mpopt, fd);
                     if mpopt.out.all == 0

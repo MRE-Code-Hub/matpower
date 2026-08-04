@@ -36,7 +36,7 @@ function rv = mpver(varargin)
 v{1} = struct(  'Name',     'MATPOWER', ... 
                 'Version',  '8.1.1-dev', ...
                 'Release',  '', ...
-                'Date',     '31-Jul-2026' );
+                'Date',     '04-Aug-2026' );
 if nargout > 0
     if nargin > 0
         rv = v{1};
@@ -61,13 +61,13 @@ else
     else
         v{2} = ver('matlab');
         if length(v{2}) > 1
-            warning('The built-in VER command is behaving strangely, probably as a result of installing a 3rd party toolbox in a directory named ''matlab'' on your path. Check each element of the output of ver(''matlab'') to find the offending toolbox, then move the toolbox to a more appropriately named directory.');
+            mp_warning('The built-in VER command is behaving strangely, probably as a result of installing a 3rd party toolbox in a directory named ''matlab'' on your path. Check each element of the output of ver(''matlab'') to find the offending toolbox, then move the toolbox to a more appropriately named directory.');
             v{2} = v{2}(1);
         end
     end
     v{3} = ver('optim');
     if length(v{3}) > 1
-        warning('The built-in VER command is behaving strangely, probably as a result of installing a 3rd party toolbox in a directory named ''optim'' on your path. Check each element of the output of ver(''optim'') to find the offending toolbox, then move the toolbox to a more appropriately named directory.');
+        mp_warning('The built-in VER command is behaving strangely, probably as a result of installing a 3rd party toolbox in a directory named ''optim'' on your path. Check each element of the output of ver(''optim'') to find the offending toolbox, then move the toolbox to a more appropriately named directory.');
         v{3} = v{3}(1);
     end
     for n = 1:3

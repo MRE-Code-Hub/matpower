@@ -1030,7 +1030,7 @@ else
     slims = struct();
 end
 if isempty(mpopt)
-    warning('softlims_defaults: Assuming ''mpopt.opf.softlims.default'' = 1, since mpopt was not provided.');
+    mp_warning('softlims_defaults: Assuming ''mpopt.opf.softlims.default'' = 1, since mpopt was not provided.');
     use_default = 1;
 else
     use_default = mpopt.opf.softlims.default;
@@ -1265,7 +1265,7 @@ for lm = fieldnames(lims).'
     try
         s.cost = s.cost(idxmask);
     catch me
-        warning('softlims_init: something went wrong when handling the cost for limit %s. Perhaps the size of the ''cost'' vector didn''t match the size of the ''idx'' vector?', lim);
+        mp_warning('softlims_init: something went wrong when handling the cost for limit %s. Perhaps the size of the ''cost'' vector didn''t match the size of the ''idx'' vector?', lim);
         rethrow(me);
     end
 

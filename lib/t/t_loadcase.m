@@ -2,7 +2,7 @@ function t_loadcase(quiet)
 % t_loadcase - Test that loadcase works with a struct as well as case file.
 
 %   MATPOWER
-%   Copyright (c) 2004-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2004-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -558,7 +558,7 @@ t_is(gen5(1,2), gen4(1,2) - 1, 1, t);   %% slack bus output should decrease by 1
 
 %% $MATPOWER/t/t_loadcase should not be in path
 if exist('case_for_off_path_test') == 2
-    warning('You have $MATPOWER/t/t_loadcase in your path. In general your path should not include sub-directories of $MATPOWER/t. While harmless, it does prevent this test from verifying the ability to load m-file cases that are outside your path.');
+    mp_warning('You have $MATPOWER/t/t_loadcase in your path. In general your path should not include sub-directories of $MATPOWER/t. While harmless, it does prevent this test from verifying the ability to load m-file cases that are outside your path.');
 end
 
 t = 'mpc = loadcase(<file not in path>) : ';

@@ -81,7 +81,7 @@ classdef mp_table
 
                 %% check dimensions
                 if length(var_names) > nv
-                    warning('mp_table: ignoring %d extra VariableNames provided', length(var_names)-nv);
+                    mp_warning('mp_table: ignoring %d extra VariableNames provided', length(var_names)-nv);
                 end
                 nr = size(args{1}, 1);      %% number of rows
                 for k = 2:nv

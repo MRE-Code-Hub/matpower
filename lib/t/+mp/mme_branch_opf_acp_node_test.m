@@ -51,7 +51,7 @@ classdef mme_branch_opf_acp_node_test < mp.mme_branch_opf_acp
                 end
             end
             if length(i)
-                warning('OPF branch angle difference limits not implemented for this case.');
+                mp_warning('OPF branch angle difference limits not implemented for this case.');
             end
         end
     end     %% methods

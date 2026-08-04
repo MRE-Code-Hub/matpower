@@ -55,10 +55,10 @@ if ~dc && ( ~isempty(mpopt.exp.sys_wide_zip_loads.pw) && ...
             ~isempty(mpopt.exp.sys_wide_zip_loads.qw) && ...
                     ~isequal(mpopt.exp.sys_wide_zip_loads.qw, [1 0 0]) )
     if vcart
-        warning('Voltage dependent loads are not supported with option ''opf.v_cartesian'' = 1. Reverting to constant power load model.');
+        mp_warning('Voltage dependent loads are not supported with option ''opf.v_cartesian'' = 1. Reverting to constant power load model.');
     end
     if mpopt.opf.current_balance
-        warning('Voltage dependent loads are not supported with option ''opf.current_balance'' = 1. Reverting to constant power load model.');
+        mp_warning('Voltage dependent loads are not supported with option ''opf.current_balance'' = 1. Reverting to constant power load model.');
     end
 end
 

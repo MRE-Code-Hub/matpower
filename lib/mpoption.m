@@ -593,7 +593,7 @@ if have_opt0
                         ~isstruct(opt0.cpf.user_callback_args)) || ...
                         (isstruct(opt0.cpf.user_callback_args) && ...
                          ~isempty(fields(opt0.cpf.user_callback_args)))
-                    warning('The ''cpf.user_callback_args'' option has been removed. Please include the args in a struct in ''cpf.user_callback'' instead.')
+                    mp_warning('The ''cpf.user_callback_args'' option has been removed. Please include the args in a struct in ''cpf.user_callback'' instead.')
                 end
                 opt0.cpf = rmfield(opt0.cpf, 'user_callback_args');
             end

@@ -281,7 +281,7 @@ if ~isempty(mpc.bus)
                 warnstr = '';
             end
             if warnstr
-                warning('runpf: %s not support ZIP load model. Converting to constant power loads.', warnstr);
+                mp_warning('runpf: %s not support ZIP load model. Converting to constant power loads.', warnstr);
                 mpopt = mpoption(mpopt, 'exp.sys_wide_zip_loads', ...
                                 struct('pw', [], 'qw', []));
             end

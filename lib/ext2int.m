@@ -79,7 +79,7 @@ function [i2e, bus, gen, branch, areas] = ext2int(bus, gen, branch, areas)
 %       MATPOWER v4 through v7.0b1.
 
 %   MATPOWER
-%   Copyright (c) 1996-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 1996-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -259,10 +259,10 @@ if isstruct(bus)
             dim = areas;                %% rename argument
         end
         if ischar(gen) || iscell(gen)   %% field
-            warning('Calls of the form MPC = EXT2INT(MPC, ''FIELD_NAME'', ...) have been deprecated. Please replace EXT2INT with E2I_FIELD.');
+            mp_warning('Calls of the form MPC = EXT2INT(MPC, ''FIELD_NAME'', ...) have been deprecated. Please replace EXT2INT with E2I_FIELD.');
             i2e = e2i_field(mpc, gen, ordering, dim);
         else                            %% value
-            warning('Calls of the form VAL = EXT2INT(MPC, VAL, ...) have been deprecated. Please replace EXT2INT with E2I_DATA.');
+            mp_warning('Calls of the form VAL = EXT2INT(MPC, VAL, ...) have been deprecated. Please replace EXT2INT with E2I_DATA.');
             i2e = e2i_data(mpc, gen, ordering, dim);
         end
     end

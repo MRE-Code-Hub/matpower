@@ -13,10 +13,11 @@ For change history for [MOST][3], see [most/CHANGES.md](most/CHANGES.md).
 since version 8.1
 -----------------
 
-#### 7/31/26
-  - Use `mp_printf()` and `mp_disp()`, recently included in [MP-Test](1),
-    in place of `fprintf()` and `disp()` everywhere to allow redirecting of
-    console output.
+#### 8/4/26
+  - Add support for redirecting console output via `mp.logger` by replacing
+    `disp()`, `fprintf()` and `warning()` everywhere with `mp_disp()`,
+    `mp_printf()` and `mp_warning()`, respectively. Requires [MP-Test](1) 8.2
+    or later.
 
 #### 3/10/26
   - Add to `mp_table` the ability to delete rows with `T(*, :) = []` syntax,

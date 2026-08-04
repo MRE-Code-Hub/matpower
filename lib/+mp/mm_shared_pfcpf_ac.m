@@ -5,7 +5,7 @@ classdef (Abstract) mm_shared_pfcpf_ac < mp.mm_shared_pfcpf
 % power flow (CPF) **math model** objects.
 
 %   MATPOWER
-%   Copyright (c) 2022-2024, Power Systems Engineering Research Center (PSERC)
+%   Copyright (c) 2022-2026, Power Systems Engineering Research Center (PSERC)
 %   by Ray Zimmerman, PSERC Cornell
 %
 %   This file is part of MATPOWER.
@@ -133,7 +133,7 @@ classdef (Abstract) mm_shared_pfcpf_ac < mp.mm_shared_pfcpf
                 %% throw a warning if we find such a case
                 if any(sum(CCrpv ~= 0) > 1)
                     k = find(sum(CCrpv ~= 0) > 1);
-                    warning('update_z:multiple_nodes', ...
+                    mp_warning('update_z:multiple_nodes', ...
                         'mp.mm_shared_pfcpf_ac/update_z: unable to distribute reactive power due to z var %d affecting multiple nodes.', k(1));
                 end
 

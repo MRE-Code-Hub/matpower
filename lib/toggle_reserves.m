@@ -443,7 +443,7 @@ if isfield(r, 'R')
         fprintf(fd, '%sreserves.totalcost = %s\n', prefix, serialize(r.totalcost));
     else
         url = 'https://www.mathworks.com/matlabcentral/fileexchange/12063-serialize';
-        warning('MATPOWER:serialize', ...
+        mp_warning('MATPOWER:serialize', ...
             'userfcn_reserves_savecase: Cannot save the ''reserves'' output fields without the ''serialize'' function, which is available as a free download from:\n<%s>\n\n', url);
     end
 end

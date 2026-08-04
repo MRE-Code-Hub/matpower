@@ -8832,6 +8832,7 @@ The \href{https://matpower.org/docs/MATPOWER-manual-8.1.1.pdf}{\matpower{} 8.1.1
 
 \subsubsection*{New Features}
 \begin{itemize}
+\item Support for redirecting console output via \code{mp.logger} by replacing \code{disp()}, \code{fprintf()} and \code{warning()} everywhere with \code{mp\_disp()}, \code{mp\_printf()} and \code{mp\_warning()}, respectively. Requires \mptestlink{} 8.2 or later.
 \item
 \item New options:
 \begin{itemize}
