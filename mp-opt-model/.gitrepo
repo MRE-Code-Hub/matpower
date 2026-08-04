@@ -6,7 +6,7 @@
 [subrepo]
 	remote = git@github.com:MATPOWER/mp-opt-model
 	branch = master
-	commit = 013da626cc63759852180a9e1395de8db7ec93ea
-	parent = ce66c763d136a14aa9142ceab93f52dded42bfb2
+	commit = 6e516d0ed0403cd76bd59a4e4218cc527b01d3f1
+	parent = 6536170d5520b6cd5e0ef3e91a366f3b04161873
 	method = merge
 	cmdver = 0.4.9
